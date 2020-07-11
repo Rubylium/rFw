@@ -10,5 +10,7 @@ client_scripts {
 server_scripts {
     '@mysql-async/lib/MySQL.lua',
     "config.lua",
-    "server/*.lua",
+    "server/player/*.lua",
+    "server/inventory/*.lua",
+    "server/society/*.lua",
 }
