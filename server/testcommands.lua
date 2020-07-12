@@ -13,3 +13,13 @@ end, false)
 RegisterCommand("removebank", function(source, args, rawCommand)
     RemoveBank(source, args[1])
 end, false)
+
+RegisterCommand("giveitem", function(source, args, rawCommand)
+    AddItem(source, args[1], tonumber(args[2]))
+end, false)
+
+RegisterCommand("debuginv", function(source, args, rawCommand)
+    for k,v in pairs(PlayersCache[source].inv) do
+        print(k, v.count)
+    end
+end, false)
