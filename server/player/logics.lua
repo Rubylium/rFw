@@ -26,7 +26,7 @@ function SavePlayer(info, id)
 end
 
 function CreateUser(license)
-    local accounts = json.encode({money = 500, bank = 2000})
+    local accounts = json.encode({money = config.defaultMoney, bank = config.defaultBank})
     MySQL.Sync.execute("INSERT INTO `players` (`license`, `accounts`, `inv`) VALUES ('"..license.."', '"..accounts.."', '[]')")
 
     local id = MySQL.Sync.fetchAll("SELECT id FROM players WHERE license = @identifier", {
@@ -51,8 +51,8 @@ AddEventHandler(config.prefix.."InitPlayer", function()
         PlayersCache[source].source = source
         PlayersCache[source].inv = {}
         PlayersCache[source].id = id
-        PlayersCache[source].money = 500
-        PlayersCache[source].bank = 5000
+        PlayersCache[source].money = config.defaultMoney
+        PlayersCache[source].bank = config.defaultBank
     else
         local inv = json.decode(info[1].inv)
         local account = json.decode(info[1].accounts)
