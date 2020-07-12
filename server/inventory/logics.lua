@@ -18,6 +18,7 @@ function AddItem(id, item, count)
             else -- Item do exist, adding count
                 PlayersCache[id].inv[item].count = PlayersCache[id].inv[item].count + count
             end
+            TriggerClientEvent(config.prefix.."OnGetItem", id, items[item].label, count)
         else
             -- Item do not exist, should do some kind of error notification
             ErrorHandling(id, 1)
@@ -39,6 +40,7 @@ function RemoveItem(id, item, count)
                 else
                     PlayersCache[id].inv[item].count = PlayersCache[id].inv[item].count - count
                 end
+                TriggerClientEvent(config.prefix.."OnRemoveItem", id, items[item].label, count)
             else
                 ErrorHandling(id, 2)
             end

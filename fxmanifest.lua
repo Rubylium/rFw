@@ -2,6 +2,16 @@
 fx_version 'adamant'
 games { 'gta5' };
 
+ui_page "client/web/index.html"
+
+files {
+    'client/web/js/iziToast.js',
+    'client/web/js/main.js',
+    'client/web/css/iziToast.css',
+    'client/web/index.html',
+}
+
+
 client_scripts {
     "config.lua",
     "client/*.lua",

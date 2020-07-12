@@ -5,6 +5,8 @@ config = {
 
     defaultWeightLimit = 50,
 
+    defaultPos = vector3(0.0, 0.0, 0.0),
+
     items = {
         ["test"] = {label = "Item test", weight = 1},
     }
