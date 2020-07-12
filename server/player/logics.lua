@@ -53,6 +53,7 @@ AddEventHandler(config.prefix.."InitPlayer", function()
         PlayersCache[source].id = id
         PlayersCache[source].money = config.defaultMoney
         PlayersCache[source].bank = config.defaultBank
+        PlayersCache[source].pos = config.defaultPos
     else
         local inv = json.decode(info[1].inv)
         local account = json.decode(info[1].accounts)
@@ -61,6 +62,11 @@ AddEventHandler(config.prefix.."InitPlayer", function()
         PlayersCache[source].id = info[1].id
         PlayersCache[source].money = account.money
         PlayersCache[source].bank = account.bank
+        if info[1].pos == nil then
+            PlayersCache[source].pos = config.defaultPos
+        else
+            PlayersCache[source].pos = info[1].pos
+        end
     end
     print("^2CACHE: ^7Added player "..source.." to cache.")
 end)

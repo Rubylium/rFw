@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jul 11, 2020 at 07:15 PM
+-- Generation Time: Jul 12, 2020 at 03:52 PM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 5.6.40
 
@@ -34,8 +34,9 @@ CREATE TABLE IF NOT EXISTS `players` (
   `license` varchar(50) NOT NULL,
   `accounts` text NOT NULL,
   `inv` text NOT NULL,
+  `pos` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
