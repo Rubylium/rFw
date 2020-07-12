@@ -24,3 +24,26 @@ function AddItem(id, item, count)
         end
     end)
 end
+
+--[[ 
+id = Server ID
+item = Item name, not label
+count = Item count to remove
+]]--
+function RemoveItem(id, item, count)
+    Citizen.CreateThread(function()
+        if items[item] ~= nil then
+            if PlayersCache[id].inv[item] ~= nil then -- Item do not exist in inventory
+                if PlayersCache[id].inv[item].count - count <= 0 then -- If count < or = 0 after removing item count, then deleting it from player inv
+                    PlayersCache[id].inv[item] = nil
+                else
+                    PlayersCache[id].inv[item].count = PlayersCache[id].inv[item].count - count
+                end
+            else
+                ErrorHandling(id, 2)
+            end
+        else
+            ErrorHandling(id, 1)
+        end
+    end)
+end
