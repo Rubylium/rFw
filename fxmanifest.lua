@@ -21,4 +21,6 @@ server_exports {
     "RemoveMoney",
     "AddBank",
     "RemoveBank",
+    "GetMoney",
+    "GetBank",
 }
