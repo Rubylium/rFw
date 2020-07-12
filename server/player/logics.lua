@@ -37,8 +37,8 @@ end
 
 RegisterNetEvent(config.prefix.."InitPlayer")
 AddEventHandler(config.prefix.."InitPlayer", function()
-    local license = GetLicense(source)
-    local source = source
+    local source = source	
+    local license = GetPlayerIdentifiers(source)[1]
 
     local info = MySQL.Sync.fetchAll("SELECT * FROM players WHERE license = @identifier", {
         ['@identifier'] = license
