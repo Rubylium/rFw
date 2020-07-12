@@ -11,6 +11,7 @@ server_scripts {
     '@mysql-async/lib/MySQL.lua',
     "config.lua",
     "server/utils.lua",
+    "server/testcommands.lua",
     "server/player/*.lua",
     "server/inventory/*.lua",
     "server/society/*.lua",
