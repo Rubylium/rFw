@@ -7,27 +7,30 @@ PlayersCache = {}
 Citizen.CreateThread(function()
     while true do
         for k,v in pairs(PlayersCache) do
-            print(v.id, v.money, v.bank, v.inv)
-            if GetPlayerPing(v.source) == 0 then
-                SavePlayer(v, k)
-            end
+            SavePlayer(v, k)
         end
-        Wait(5*1000)
+        Wait(config.savingAllPlayers*60*1000)
     end
+end)
+
+AddEventHandler('playerDropped', function (reason)
+    SavePlayer(PlayersCache[source], source)
+    PlayersCache[source] = nil
 end)
 
 function SavePlayer(info, id)
     local account = json.encode({money = info.money, bank = info.bank})
     local inv = json.encode(info.inv)
+    local pos = json.encode({x = info.pos.x, y = info.pos.y, z = info.pos.z})
 
-    MySQL.Sync.execute("UPDATE `players` SET accounts = '"..account.."', inv = '"..inv.."' WHERE players.id = '"..info.id.."'")
+    MySQL.Sync.execute("UPDATE `players` SET accounts = '"..account.."', inv = '"..inv.."', pos = '"..pos.."' WHERE players.id = '"..info.id.."'")
     print("^2SAVED: ^7Player "..info.source.." saved.")
-    PlayersCache[id] = nil
 end
 
 function CreateUser(license)
     local accounts = json.encode({money = config.defaultMoney, bank = config.defaultBank})
-    MySQL.Sync.execute("INSERT INTO `players` (`license`, `accounts`, `inv`) VALUES ('"..license.."', '"..accounts.."', '[]')")
+    local pos = json.encode({x = config.defaultPos.x, y = config.defaultPos.y, z = config.defaultPos.z})
+    MySQL.Sync.execute("INSERT INTO `players` (`license`, `accounts`, `inv`, `pos`) VALUES ('"..license.."', '"..accounts.."', '[]', '"..pos.."')")
 
     local id = MySQL.Sync.fetchAll("SELECT id FROM players WHERE license = @identifier", {
         ['@identifier'] = license
@@ -65,7 +68,8 @@ AddEventHandler(config.prefix.."InitPlayer", function()
         if info[1].pos == nil then
             PlayersCache[source].pos = config.defaultPos
         else
-            PlayersCache[source].pos = info[1].pos
+            local pos = json.decode(info[1].pos)
+            PlayersCache[source].pos = vector3(pos.x, pos.y, pos.z)
         end
     end
     print("^2CACHE: ^7Added player "..source.." to cache.")
