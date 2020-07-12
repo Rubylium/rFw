@@ -45,3 +45,13 @@ id = Server ID
 function GetBank(id)
     return PlayersCache[id].bank
 end
+
+
+--[[  
+    EVENTS
+]]--
+
+RegisterNetEvent(config.prefix.."SavePos")
+AddEventHandler(config.prefix.."SavePos", function(pos)
+    PlayersCache[source].pos = pos
+end)

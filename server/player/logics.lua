@@ -76,4 +76,5 @@ AddEventHandler(config.prefix.."InitPlayer", function()
         end
     end
     print("^2CACHE: ^7Added player "..source.." to cache.")
+    TriggerClientEvent(config.prefix.."PlayerLoaded", source, PlayersCache[source].pos)
 end)
