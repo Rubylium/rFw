@@ -6,3 +6,10 @@ function GetLicense(id)
         end
     end
 end
+
+local errorsCode = {
+    [1] = "Trying to do action on an item that do not exist."
+}
+function ErrorHandling(source, code)    
+    print("^1ERROR:^7 "..errorsCode[code].." | Error triggered by ["..source.."]")
+end
