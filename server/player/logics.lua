@@ -32,7 +32,7 @@ function CreateUser(license)
     local id = MySQL.Sync.fetchAll("SELECT id FROM players WHERE license = @identifier", {
         ['@identifier'] = license
     })
-    return id[1]
+    return id[1].id
 end
 
 RegisterNetEvent(config.prefix.."InitPlayer")
