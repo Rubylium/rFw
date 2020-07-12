@@ -1,5 +1,5 @@
 config = {
-    prefix = "rFw:"
+    prefix = "rFw:",
     defaultBank = 2000,
     defaultMoney = 500,
 }
