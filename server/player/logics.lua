@@ -14,8 +14,11 @@ Citizen.CreateThread(function()
 end)
 
 AddEventHandler('playerDropped', function (reason)
-    SavePlayer(PlayersCache[source], source)
-    PlayersCache[source] = nil
+    local source = source
+    if PlayersCache[source] ~= nil then
+        SavePlayer(PlayersCache[source], source)
+        PlayersCache[source] = nil
+    end
 end)
 
 function SavePlayer(info, id)
