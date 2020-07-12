@@ -16,3 +16,11 @@ end
 function RemoveBank(id, rmv)
     PlayersCache[id].bank = PlayersCache[id].bank - tonumber(rmv)
 end
+
+function GetMoney(id)
+    return PlayersCache[id].money
+end
+
+function GetBank(id)
+    return PlayersCache[id].bank
+end
