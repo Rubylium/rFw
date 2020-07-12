@@ -14,3 +14,11 @@ server_scripts {
     "server/inventory/*.lua",
     "server/society/*.lua",
 }
+
+
+server_exports {
+    "AddMoney",
+    "RemoveMoney",
+    "AddBank",
+    "RemoveBank",
+}
