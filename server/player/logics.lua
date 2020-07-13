@@ -27,7 +27,7 @@ function SavePlayer(info, id)
     local account = json.encode({money = info.money, bank = info.bank})
     local inv = json.encode(info.inv)
     local pos = json.encode({x = info.pos.x, y = info.pos.y, z = info.pos.z})
-    table.insert(requests, "UPDATE `players` SET accounts = '"..account.."', inv = '"..inv.."', pos = '"..pos.."' WHERE players.id = '"..info.id.."'")
+    requests[#requests + 1] = "UPDATE `players` SET accounts = '"..account.."', inv = '"..inv.."', pos = '"..pos.."' WHERE players.id = '"..info.id.."'"
     savingCount = savingCount + 1
 
     if savingCount == #PlayersCache and savingCount > 0 then
