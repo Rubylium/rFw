@@ -61,7 +61,7 @@ function AddItemIf(id, item, count)
     Citizen.CreateThread(function() -- Working in async, maybe that could fix inv issue i got without working in async, need testing i guess
         if items[item] ~= nil then
             local iWeight = GetInvWeight(PlayersCache[id].inv)
-            if iWeight + items[item].weight <= config.defaultWeightLimit then
+            if iWeight + (items[item].weight * count) <= config.defaultWeightLimit then
                 if PlayersCache[id].inv[item] == nil then -- Item do not exist in inventory, creating it
                     PlayersCache[id].inv[item] = {}
                     PlayersCache[id].inv[item].label = items[item].label
@@ -72,6 +72,7 @@ function AddItemIf(id, item, count)
                 TriggerClientEvent(config.prefix.."OnGetItem", id, items[item].label, count)
             else
                 -- Need to do error notification to say, you can't hold the object
+                TriggerClientEvent(config.prefix.."OnWeightLimit", id, items[item].label)
             end
         else
             -- Item do not exist, should do some kind of error notification
