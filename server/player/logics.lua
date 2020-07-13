@@ -21,13 +21,27 @@ AddEventHandler('playerDropped', function (reason)
     end
 end)
 
+local savingCount = 0
+local requests = {}
 function SavePlayer(info, id)
     local account = json.encode({money = info.money, bank = info.bank})
     local inv = json.encode(info.inv)
     local pos = json.encode({x = info.pos.x, y = info.pos.y, z = info.pos.z})
+    table.insert(requests, "UPDATE `players` SET accounts = '"..account.."', inv = '"..inv.."', pos = '"..pos.."' WHERE players.id = '"..info.id.."'")
+    savingCount = savingCount + 1
 
-    MySQL.Sync.execute("UPDATE `players` SET accounts = '"..account.."', inv = '"..inv.."', pos = '"..pos.."' WHERE players.id = '"..info.id.."'")
-    print("^2SAVED: ^7Player "..info.source.." saved.")
+    if savingCount == #PlayersCache and savingCount > 0 then
+        MySQL.Async.transaction(requests, {}, function(success)
+            if success then
+                print("^2SAVED: ^7"..savingCount.." players saved.")
+            else
+                print("^1ERROR: ^7Could not save"..savingCount.." players.")
+            end
+            savingCount = 0
+            requests = {}
+        end)  
+    end
+    
 end
 
 function CreateUser(license)
