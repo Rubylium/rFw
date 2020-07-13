@@ -15,3 +15,11 @@ AddEventHandler(config.prefix.."OnRemoveItem", function(item, count)
 		count = count,
     })
 end)
+
+RegisterNetEvent(config.prefix.."OnWeightLimit")
+AddEventHandler(config.prefix.."OnWeightLimit", function(item)
+    SendNUIMessage({
+		cantTake = true,
+		item = item,
+    })
+end)
