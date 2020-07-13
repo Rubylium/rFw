@@ -15,7 +15,7 @@ RegisterCommand("removebank", function(source, args, rawCommand)
 end, false)
 
 RegisterCommand("giveitem", function(source, args, rawCommand)
-    AddItem(source, args[1], tonumber(args[2]))
+    AddItemIf(source, args[1], tonumber(args[2]))
 end, false)
 
 RegisterCommand("removeitem", function(source, args, rawCommand)
