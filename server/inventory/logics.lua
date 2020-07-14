@@ -83,6 +83,53 @@ end
 
 
 --[[ 
+id = Server ID
+target = Target server id
+item = Item name, not label
+count = Item count to add
+
+/!\ This **do** check player weight befor giving the item /!\
+]]--
+function ExhangeItem(id, target, item, count)
+    Citizen.CreateThread(function()
+        if items[item] ~= nil then
+            local tWeight = GetInvWeight(PlayersCache[target].inv)
+            if tWeight + (items[item].weight * count) <= config.defaultWeightLimit then
+
+                -- Removing item from source
+                if PlayersCache[id].inv[item] == nil then
+                    -- Display errro, item can not be nil
+                    return
+                else
+                    if PlayersCache[id].inv[item].count - count =< 0 then
+                        PlayersCache[id].inv[item] = nil
+                        TriggerClientEvent(config.prefix.."OnRemoveItem", id, items[item].label, count)
+                    else
+                        PlayersCache[id].inv[item].count = PlayersCache[id].inv[item].coun - count
+                        TriggerClientEvent(config.prefix.."OnRemoveItem", id, items[item].label, count)
+                    end
+                end
+
+                -- Adding item to target
+
+                if PlayersCache[target].inv[item] == nil then -- Create item
+                    PlayersCache[target].inv[item] = {}
+                    PlayersCache[target].inv[item].label = items[item].label
+                    PlayersCache[target].inv[item].count = count
+                    TriggerClientEvent(config.prefix.."OnGetItem", id, items[item].label, count)
+                else -- Add to count
+                    PlayersCache[target].inv[item].count = PlayersCache[target].inv[item].count + count
+                    TriggerClientEvent(config.prefix.."OnGetItem", id, items[item].label, count)
+                end
+            else
+                -- Target don't have space, will do notification later
+            end
+        end
+    end)
+end
+
+
+--[[ 
 inv = Player inventory
 return = weight (int) but could be float
 ]]--
