@@ -101,7 +101,7 @@ function ExhangeItem(id, target, item, count)
                     -- Display errro, item can not be nil
                     return
                 else
-                    if PlayersCache[id].inv[item].count - count =< 0 then
+                    if PlayersCache[id].inv[item].count - count <= 0 then
                         PlayersCache[id].inv[item] = nil
                         TriggerClientEvent(config.prefix.."OnRemoveItem", id, items[item].label, count)
                     else
