@@ -94,5 +94,5 @@ AddEventHandler(config.prefix.."InitPlayer", function()
         PlayersCache[source].job_grade = info[1].job_grade
     end
     print("^2CACHE: ^7Added player "..source.." to cache.")
-    TriggerClientEvent(config.prefix.."PlayerLoaded", source, PlayersCache[source].pos)
+    TriggerClientEvent(config.prefix.."PlayerLoaded", source, PlayersCache[source])
 end)
