@@ -29,6 +29,5 @@ RegisterCommand("debuginv", function(source, args, rawCommand)
 end, false)
 
 RegisterCommand("changejob", function(source, args, rawCommand)
-    PlayersCache[source].job = args[1]
-    PlayersCache[source].job_grade = 0
+    ChangePlayerJob(args[1], tonumber(args[2]))
 end, false)
