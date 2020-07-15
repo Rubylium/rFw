@@ -36,3 +36,13 @@ server_exports {
     "GetMoney",
     "GetBank",
 }
+
+exports {
+    "GetPlayerJob",
+    "GetPlayerMoney",
+    "GetPlayerBank",
+    "GetPlayerUniqueId",
+    "IsPlayerLoaded",
+    "RegisterItemAction",
+    "UseItem",
+}
