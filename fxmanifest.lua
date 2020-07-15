@@ -42,4 +42,7 @@ exports {
     "GetPlayerMoney",
     "GetPlayerBank",
     "GetPlayerUniqueId",
+    "IsPlayerLoaded",
+    "RegisterItemAction",
+    "UseItem",
 }
