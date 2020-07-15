@@ -46,6 +46,17 @@ function GetBank(id)
     return PlayersCache[id].bank
 end
 
+--[[  
+id = Server ID
+job = New player job
+grade = Job grade
+]]--
+function ChangePlayerJob(id, job, grade)
+    if grade == nil then grade = 0 end
+    PlayersCache[id].job = job
+    PlayersCache[id].job_grade = grade
+    TriggerClientEvent(config.prefix.."OnJobChange", id, job, grade)
+end
 
 --[[  
     EVENTS
