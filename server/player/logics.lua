@@ -27,7 +27,7 @@ function SavePlayer(info, id)
     local account = json.encode({money = info.money, bank = info.bank})
     local inv = json.encode(info.inv)
     local pos = json.encode({x = info.pos.x, y = info.pos.y, z = info.pos.z})
-    requests[#requests + 1] = "UPDATE `players` SET accounts = '"..account.."', inv = '"..inv.."', pos = '"..pos.."' WHERE players.id = '"..info.id.."'"
+    requests[#requests + 1] = "UPDATE `players` SET accounts = '"..account.."', inv = '"..inv.."', pos = '"..pos.."', job = '"..info.job.."', job_grade = '"..info.job_grade.."' WHERE players.id = '"..info.id.."'"
     savingCount = savingCount + 1
 
     if savingCount == #PlayersCache and savingCount > 0 then
@@ -47,7 +47,7 @@ end
 function CreateUser(license)
     local accounts = json.encode({money = config.defaultMoney, bank = config.defaultBank})
     local pos = json.encode({x = config.defaultPos.x, y = config.defaultPos.y, z = config.defaultPos.z})
-    MySQL.Sync.execute("INSERT INTO `players` (`license`, `accounts`, `inv`, `pos`) VALUES ('"..license.."', '"..accounts.."', '[]', '"..pos.."')")
+    MySQL.Sync.execute("INSERT INTO `players` (`license`, `accounts`, `inv`, `pos`, `job`, `job_grade`) VALUES ('"..license.."', '"..accounts.."', '[]', '"..pos.."', 'Aucun', '0')")
 
     local id = MySQL.Sync.fetchAll("SELECT id FROM players WHERE license = @identifier", {
         ['@identifier'] = license
@@ -74,6 +74,8 @@ AddEventHandler(config.prefix.."InitPlayer", function()
         PlayersCache[source].money = config.defaultMoney
         PlayersCache[source].bank = config.defaultBank
         PlayersCache[source].pos = config.defaultPos
+        PlayersCache[source].job = "Aucun"
+        PlayersCache[source].job_grade = 0
     else
         local inv = json.decode(info[1].inv)
         local account = json.decode(info[1].accounts)
@@ -88,6 +90,8 @@ AddEventHandler(config.prefix.."InitPlayer", function()
             local pos = json.decode(info[1].pos)
             PlayersCache[source].pos = vector3(pos.x, pos.y, pos.z)
         end
+        PlayersCache[source].job = info[1].job
+        PlayersCache[source].job_grade = info[1].job_grade
     end
     print("^2CACHE: ^7Added player "..source.." to cache.")
     TriggerClientEvent(config.prefix.."PlayerLoaded", source, PlayersCache[source].pos)
