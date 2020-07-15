@@ -29,5 +29,5 @@ RegisterCommand("debuginv", function(source, args, rawCommand)
 end, false)
 
 RegisterCommand("changejob", function(source, args, rawCommand)
-    ChangePlayerJob(args[1], tonumber(args[2]))
+    ChangePlayerJob(source, args[1], tonumber(args[2]))
 end, false)
