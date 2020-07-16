@@ -17,3 +17,14 @@ end, false)
 RegisterCommand("pos", function(source, args, rawCommand)
     print(GetEntityCoords(GetPlayerPed(-1)))
 end, false)
+
+RegisterCommand("random", function(source, args, rawCommand)
+    local pVeh = GetVehiclePedIsIn(GetPlayerPed(-1), false)
+    SetVehicleModKit(pVeh, 0)
+    for i = 0,49 do
+        local p = GetNumVehicleMods(pVeh, i)
+        print(i, p)
+        if p == 0 then p = 2 end
+        SetVehicleMod(pVeh, i, math.random(1, p), true)
+    end
+end, false)
