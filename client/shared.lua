@@ -120,7 +120,7 @@ function GetVehicleProperties(vehicle)
 			modTrimB          = GetVehicleMod(vehicle, 44),
 			modTank           = GetVehicleMod(vehicle, 45),
 			modWindows        = GetVehicleMod(vehicle, 46),
-			modLivery         = GetVehicleLivery(vehicle)
+			modLivery         = GetVehicleMod(vehicle, 48),
 		}
 	else
 		return
