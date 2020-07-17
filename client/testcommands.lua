@@ -15,7 +15,7 @@ RegisterCommand("car", function(source, args, rawCommand)
 end, false)
 
 RegisterCommand("pos", function(source, args, rawCommand)
-    print(GetEntityCoords(GetPlayerPed(-1)))
+    print("{pos = "..GetEntityCoords(GetPlayerPed(-1))..", heading = "..GetEntityHeading(GetPlayerPed(-1)).."},")
 end, false)
 
 RegisterCommand("random", function(source, args, rawCommand)
