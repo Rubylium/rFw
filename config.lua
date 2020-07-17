@@ -11,6 +11,5 @@ config = {
 
     items = {
         ["test"] = {label = "Item test", weight = 1},
-        ["repairkit"] = {label = "Repair kit", weight = 1},
     }
 }
