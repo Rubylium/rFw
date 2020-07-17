@@ -44,3 +44,13 @@ function UseItem(item)
 		print("^1ERROR:^7 Try to use invalid item")
 	end
 end
+
+
+function RegisterNewItem(item, _label, _weight)
+	if config.items[item] == nil then
+		config.items[item] = {label = _label, weight = _weight}
+		TriggerServerEvent(config.prefix.."RegisterNewItem", item, _label, _weight)
+	else
+		print("^1ERROR:^7 Item already exist")
+	end
+end
