@@ -22,8 +22,11 @@ AddEventHandler(config.prefix.."OnJobChange", function(job, grade)
 end)
 
 RegisterNetEvent(config.prefix.."OnInvRefresh")
-AddEventHandler(config.prefix.."OnInvRefresh", function(inv)
+AddEventHandler(config.prefix.."OnInvRefresh", function(inv, weight)
     player.inv = inv
+    if weight ~= nil then
+        player.weight = weight
+    end
 end)
 
 function IsPlayerLoaded()
@@ -47,5 +50,5 @@ function GetPlayerUniqueId()
 end
 
 function GetPlayerInv()
-    return player.inv
+    return player.inv, player.weight
 end

@@ -19,7 +19,7 @@ function AddItem(id, item, count)
                 PlayersCache[id].inv[item].count = PlayersCache[id].inv[item].count + count
             end
             TriggerClientEvent(config.prefix.."OnGetItem", id, items[item].label, count)
-            TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv)
+            TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv, GetInvWeight(PlayersCache[id].inv))
         else
             -- Item do not exist, should do some kind of error notification
             ErrorHandling(id, 1)
@@ -42,7 +42,7 @@ function RemoveItem(id, item, count)
                     PlayersCache[id].inv[item].count = PlayersCache[id].inv[item].count - count
                 end
                 TriggerClientEvent(config.prefix.."OnRemoveItem", id, items[item].label, count)
-                TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv)
+                TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv, GetInvWeight(PlayersCache[id].inv))
             else
                 ErrorHandling(id, 2)
             end
@@ -72,7 +72,7 @@ function AddItemIf(id, item, count)
                     PlayersCache[id].inv[item].count = PlayersCache[id].inv[item].count + count
                 end
                 TriggerClientEvent(config.prefix.."OnGetItem", id, items[item].label, count)
-                TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv)
+                TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv, iWeight)
             else
                 -- Need to do error notification to say, you can't hold the object
                 TriggerClientEvent(config.prefix.."OnWeightLimit", id, items[item].label)
@@ -115,7 +115,7 @@ function ExhangeItem(id, target, item, count, countsee)
                         PlayersCache[id].inv[item].count = PlayersCache[id].inv[item].coun - count
                     end
                     TriggerClientEvent(config.prefix.."OnRemoveItem", id, items[item].label, count)
-                    TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv)
+                    TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv, GetInvWeight(PlayersCache[id].inv))
                 end
 
                 -- Adding item to target
@@ -128,7 +128,7 @@ function ExhangeItem(id, target, item, count, countsee)
                     PlayersCache[target].inv[item].count = PlayersCache[target].inv[item].count + count
                 end
                 TriggerClientEvent(config.prefix.."OnGetItem", target, items[item].label, count)
-                TriggerClientEvent(config.prefix.."OnInvRefresh", target, PlayersCache[id].inv)
+                TriggerClientEvent(config.prefix.."OnInvRefresh", target, PlayersCache[id].inv, tWeight)
             else
                 -- Target don't have space, will do notification later
             end
