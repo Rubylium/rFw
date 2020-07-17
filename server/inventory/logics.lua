@@ -93,7 +93,7 @@ count = Item count to add
 
 /!\ This **do** check player weight befor giving the item /!\
 ]]--
-function ExhangeItem(id, target, item, count)
+function ExhangeItem(id, target, item, count, countsee)
     Citizen.CreateThread(function()
         if items[item] ~= nil then
             local tWeight = GetInvWeight(PlayersCache[target].inv)
@@ -104,6 +104,11 @@ function ExhangeItem(id, target, item, count)
                     -- Display errro, item can not be nil
                     return
                 else
+                    if PlayersCache[id].inv[item].count ~= countsee then
+                        -- Display error, client count and server count are not synced, maybe try to duplicate ?
+                        return
+                    end
+
                     if PlayersCache[id].inv[item].count - count <= 0 then
                         PlayersCache[id].inv[item] = nil
                     else
