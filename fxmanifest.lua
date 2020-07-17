@@ -35,14 +35,20 @@ server_exports {
     "RemoveBank",
     "GetMoney",
     "GetBank",
+    "AddItem",
+    "RemoveItem",
+    "AddItemIf",
+    "ExhangeItem",
 }
 
 exports {
     "GetPlayerJob",
     "GetPlayerMoney",
     "GetPlayerBank",
-    "GetPlayerUniqueId",
+    "GetPlayerInv",
     "IsPlayerLoaded",
+    "GetPlayerUniqueId",
     "RegisterItemAction",
+    "RegisterNewItem",
     "UseItem",
 }
