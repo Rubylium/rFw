@@ -18,6 +18,19 @@ RegisterCommand("pos", function(source, args, rawCommand)
     print("{pos = "..GetEntityCoords(GetPlayerPed(-1))..", heading = "..GetEntityHeading(GetPlayerPed(-1)).."},")
 end, false)
 
+RegisterCommand("revive", function(source, args, rawCommand)
+    ReviveInjuredPed(GetPlayerPed(-1))
+    NetworkResurrectLocalPlayer(GetEntityCoords(GetPlayerPed(-1)), 100.0, 0, 0)
+end, false)
+
+RegisterCommand("giveweapon", function(source, args, rawCommand)
+    GiveWeaponToPed(GetPlayerPed(-1), GetHashKey(args[1]), 255, 0, 1)
+end, false)
+
+RegisterCommand("settime", function(source, args, rawCommand)
+    NetworkOverrideClockTime(tonumber(args[1]), tonumber(args[2]), tonumber(args[3]))
+end, false)
+
 RegisterCommand("random", function(source, args, rawCommand)
     local pVeh = GetVehiclePedIsIn(GetPlayerPed(-1), false)
     SetVehicleModKit(pVeh, 0)
@@ -27,4 +40,14 @@ RegisterCommand("random", function(source, args, rawCommand)
         if p == 0 then p = 2 end
         SetVehicleMod(pVeh, i, math.random(1, p), true)
     end
+end, false)
+
+local slow = false
+RegisterCommand("slow", function(source, args, rawCommand)
+    if not slow then
+        SetTimeScale(0.25)
+    else
+        SetTimeScale(1.0)
+    end
+    slow = not slow
 end, false)
