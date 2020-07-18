@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jul 15, 2020 at 08:44 PM
+-- Generation Time: Jul 18, 2020 at 10:45 PM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 5.6.40
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `players` (
   `pos` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `license` (`license`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -50,10 +50,11 @@ CREATE TABLE IF NOT EXISTS `players` (
 DROP TABLE IF EXISTS `players_veh`;
 CREATE TABLE IF NOT EXISTS `players_veh` (
   `owner` varchar(255) NOT NULL,
+  `owned` int(11) NOT NULL DEFAULT 0,
   `plate` varchar(255) NOT NULL,
   `stored` int(11) NOT NULL DEFAULT 1,
   `props` text NOT NULL,
-  `mileage` float NOT NULL,
+  `mileage` float NOT NULL DEFAULT 0,
   PRIMARY KEY (`plate`),
   KEY `owner` (`owner`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
