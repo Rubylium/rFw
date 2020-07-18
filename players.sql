@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jul 18, 2020 at 10:45 PM
+-- Generation Time: Jul 18, 2020 at 11:37 PM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 5.6.40
 
@@ -33,31 +33,14 @@ CREATE TABLE IF NOT EXISTS `players` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `license` varchar(50) NOT NULL,
   `accounts` text NOT NULL,
+  `perm_level` int(11) NOT NULL,
   `job` varchar(255) NOT NULL,
   `job_grade` varchar(255) NOT NULL,
   `inv` text NOT NULL,
   `pos` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `license` (`license`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `players_veh`
---
-
-DROP TABLE IF EXISTS `players_veh`;
-CREATE TABLE IF NOT EXISTS `players_veh` (
-  `owner` varchar(255) NOT NULL,
-  `owned` int(11) NOT NULL DEFAULT 0,
-  `plate` varchar(255) NOT NULL,
-  `stored` int(11) NOT NULL DEFAULT 1,
-  `props` text NOT NULL,
-  `mileage` float NOT NULL DEFAULT 0,
-  PRIMARY KEY (`plate`),
-  KEY `owner` (`owner`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
