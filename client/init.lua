@@ -52,3 +52,7 @@ end
 function GetPlayerInv()
     return player.inv, player.weight
 end
+
+function GetPlayerPermLevel()
+    return player.perm
+end

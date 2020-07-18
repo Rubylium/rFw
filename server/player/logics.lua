@@ -47,7 +47,7 @@ end
 function CreateUser(license)
     local accounts = json.encode({money = config.defaultMoney, bank = config.defaultBank})
     local pos = json.encode({x = config.defaultPos.x, y = config.defaultPos.y, z = config.defaultPos.z})
-    MySQL.Sync.execute("INSERT INTO `players` (`license`, `accounts`, `inv`, `pos`, `job`, `job_grade`) VALUES ('"..license.."', '"..accounts.."', '[]', '"..pos.."', 'Aucun', '0')")
+    MySQL.Sync.execute("INSERT INTO `players` (`license`, `accounts`, `perm_level`, `inv`, `pos`, `job`, `job_grade`) VALUES ('"..license.."', '"..accounts.."', '0', '[]', '"..pos.."', 'Aucun', '0')")
 
     local id = MySQL.Sync.fetchAll("SELECT id FROM players WHERE license = @identifier", {
         ['@identifier'] = license
@@ -76,6 +76,7 @@ AddEventHandler(config.prefix.."InitPlayer", function()
         PlayersCache[source].pos = config.defaultPos
         PlayersCache[source].job = "Aucun"
         PlayersCache[source].job_grade = 0
+        PlayersCache[source].perm = 0
     else
         local inv = json.decode(info[1].inv)
         local account = json.decode(info[1].accounts)
@@ -92,6 +93,7 @@ AddEventHandler(config.prefix.."InitPlayer", function()
         end
         PlayersCache[source].job = info[1].job
         PlayersCache[source].job_grade = info[1].job_grade
+        PlayersCache[source].perm = info[1].perm_level
     end
     print("^2CACHE: ^7Added player "..source.." to cache.")
     TriggerClientEvent(config.prefix.."PlayerLoaded", source, PlayersCache[source])

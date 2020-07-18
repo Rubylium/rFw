@@ -51,4 +51,5 @@ exports {
     "RegisterItemAction",
     "RegisterNewItem",
     "UseItem",
+    "GetPlayerPermLevel",
 }
