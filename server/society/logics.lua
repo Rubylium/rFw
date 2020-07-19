@@ -1,4 +1,4 @@
-local societyCache = {}
+societyCache = {}
 local savingCount = 0
 local requests = {}
 local societyCount = 0
