@@ -70,8 +70,8 @@ function BankToCash(id,value)
     if value > PlayersCache[id].bank then
         ErrorHandling(id,3)
     else
-        PlayersCache[id].bank = PlayersCache[id].bank - value
-        PlayersCache[id].money = PlayersCache[id].money + value
+        RemoveBank(id,value)
+        AddMoney(id,value)
         TriggerClientEvent(config.prefix.."OnAccountsRefresh", id, PlayersCache[id].money, PlayersCache[id].bank)
     end
 end
@@ -86,8 +86,8 @@ function doBankTransfer(from,to,value)
     if value > PlayersCache[from].bank then
         ErrorHandling(id,3)
     else
-        PlayersCache[from].bank = PlayersCache[from].bank - value
-        PlayersCache[to].bank = PlayersCache[to].bank + value
+        RemoveBank(from,value)
+        AddBank(to,value)
         TriggerClientEvent(config.prefix.."OnAccountsRefresh", from, PlayersCache[from].money, PlayersCache[from].bank)
         TriggerClientEvent(config.prefix.."OnAccountsRefresh", to, PlayersCache[to].money, PlayersCache[to].bank)
     end
@@ -102,8 +102,8 @@ function doCashTransfer(from,to,value)
     if value > PlayersCache[from].money then
         ErrorHandling(id,3)
     else
-        PlayersCache[from].money = PlayersCache[from].money - value
-        PlayersCache[to].money = PlayersCache[to].money + value
+        RemoveMoney(from,value)
+        AddMoney(to,value)
         TriggerClientEvent(config.prefix.."OnAccountsRefresh", from, PlayersCache[from].money, PlayersCache[from].bank)
         TriggerClientEvent(config.prefix.."OnAccountsRefresh", to, PlayersCache[to].money, PlayersCache[to].bank)
     end
@@ -117,8 +117,8 @@ function CashToBank(id,value)
     if value > PlayersCache[id].cash then
         ErrorHandling(id,3)
     else
-        PlayersCache[id].bank = PlayersCache[id].bank + value
-        PlayersCache[id].money = PlayersCache[id].money - value
+        AddBank(id,value)
+        RemoveMoney(id,value)
         TriggerClientEvent(config.prefix.."OnAccountsRefresh", id, PlayersCache[id].money, PlayersCache[id].bank)
     end
 end
