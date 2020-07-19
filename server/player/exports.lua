@@ -76,6 +76,39 @@ function BankToCash(id,value)
     end
 end
 
+
+--[[  
+from = Sender's Server ID
+to = Receiver's Server ID
+value = Value to send to the target
+]]--
+function doBankTransfer(from,to,value)
+    if value > PlayersCache[from].bank then
+        ErrorHandling(id,3)
+    else
+        PlayersCache[from].bank = PlayersCache[from].bank - value
+        PlayersCache[to].bank = PlayersCache[to].bank + value
+        TriggerClientEvent(config.prefix.."OnAccountsRefresh", from, PlayersCache[from].money, PlayersCache[from].bank)
+        TriggerClientEvent(config.prefix.."OnAccountsRefresh", to, PlayersCache[to].money, PlayersCache[to].bank)
+    end
+end
+
+--[[  
+from = Sender's Server ID
+to = Receiver's Server ID
+value = Value to send to the target
+]]--
+function doCashTransfer(from,to,value)
+    if value > PlayersCache[from].money then
+        ErrorHandling(id,3)
+    else
+        PlayersCache[from].money = PlayersCache[from].money - value
+        PlayersCache[to].money = PlayersCache[to].money + value
+        TriggerClientEvent(config.prefix.."OnAccountsRefresh", from, PlayersCache[from].money, PlayersCache[from].bank)
+        TriggerClientEvent(config.prefix.."OnAccountsRefresh", to, PlayersCache[to].money, PlayersCache[to].bank)
+    end
+end
+
 --[[  
 id = Server ID
 value = Value to send from cash to bank
@@ -101,6 +134,8 @@ function ChangePlayerJob(id, job, grade)
     PlayersCache[id].job_grade = grade
     TriggerClientEvent(config.prefix.."OnJobChange", id, job, grade)
 end
+
+
 
 --[[  
     EVENTS
