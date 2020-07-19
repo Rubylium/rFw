@@ -1,7 +1,7 @@
 --[[
-pour set personnage
+set skin
 
-personnage = {
+skin = {
    ped = "",
    faceMum = 1,
    faceDad = 1,
