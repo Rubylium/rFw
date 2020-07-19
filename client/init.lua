@@ -43,7 +43,7 @@ function GetPlayerMoney()
 end
 
 function GetPlayerBank()
-    return player.brank
+    return player.bank
 end
 
 function GetPlayerUniqueId()
