@@ -70,9 +70,42 @@ function BankToCash(id,value)
     if value > PlayersCache[id].bank then
         ErrorHandling(id,3)
     else
-        PlayersCache[id].bank = PlayersCache[id].bank - value
-        PlayersCache[id].money = PlayersCache[id].money + value
+        RemoveBank(id,value)
+        AddMoney(id,value)
         TriggerClientEvent(config.prefix.."OnAccountsRefresh", id, PlayersCache[id].money, PlayersCache[id].bank)
+    end
+end
+
+
+--[[  
+from = Sender's Server ID
+to = Receiver's Server ID
+value = Value to send to the target
+]]--
+function BankTransfer(from,to,value)
+    if value > PlayersCache[from].bank then
+        ErrorHandling(id,3)
+    else
+        RemoveBank(from,value)
+        AddBank(to,value)
+        TriggerClientEvent(config.prefix.."OnAccountsRefresh", from, PlayersCache[from].money, PlayersCache[from].bank)
+        TriggerClientEvent(config.prefix.."OnAccountsRefresh", to, PlayersCache[to].money, PlayersCache[to].bank)
+    end
+end
+
+--[[  
+from = Sender's Server ID
+to = Receiver's Server ID
+value = Value to send to the target
+]]--
+function CashTransfer(from,to,value)
+    if value > PlayersCache[from].money then
+        ErrorHandling(id,3)
+    else
+        RemoveMoney(from,value)
+        AddMoney(to,value)
+        TriggerClientEvent(config.prefix.."OnAccountsRefresh", from, PlayersCache[from].money, PlayersCache[from].bank)
+        TriggerClientEvent(config.prefix.."OnAccountsRefresh", to, PlayersCache[to].money, PlayersCache[to].bank)
     end
 end
 
@@ -84,8 +117,8 @@ function CashToBank(id,value)
     if value > PlayersCache[id].cash then
         ErrorHandling(id,3)
     else
-        PlayersCache[id].bank = PlayersCache[id].bank + value
-        PlayersCache[id].money = PlayersCache[id].money - value
+        AddBank(id,value)
+        RemoveMoney(id,value)
         TriggerClientEvent(config.prefix.."OnAccountsRefresh", id, PlayersCache[id].money, PlayersCache[id].bank)
     end
 end
@@ -101,6 +134,8 @@ function ChangePlayerJob(id, job, grade)
     PlayersCache[id].job_grade = grade
     TriggerClientEvent(config.prefix.."OnJobChange", id, job, grade)
 end
+
+
 
 --[[  
     EVENTS
