@@ -82,7 +82,7 @@ from = Sender's Server ID
 to = Receiver's Server ID
 value = Value to send to the target
 ]]--
-function doBankTransfer(from,to,value)
+function BankTransfer(from,to,value)
     if value > PlayersCache[from].bank then
         ErrorHandling(id,3)
     else
@@ -98,7 +98,7 @@ from = Sender's Server ID
 to = Receiver's Server ID
 value = Value to send to the target
 ]]--
-function doCashTransfer(from,to,value)
+function CashTransfer(from,to,value)
     if value > PlayersCache[from].money then
         ErrorHandling(id,3)
     else
