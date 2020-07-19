@@ -30,6 +30,12 @@ AddEventHandler(config.prefix.."OnInvRefresh", function(inv, weight)
     end
 end)
 
+RegisterNetEvent(config.prefix.."OnAccountsRefresh")
+AddEventHandler(config.prefix.."OnAccountsRefresh", function(money, bank)
+    player.money = money
+    player.bank = bank
+end)
+
 function IsPlayerLoaded()
     return PlayerLoaded
 end
@@ -43,7 +49,7 @@ function GetPlayerMoney()
 end
 
 function GetPlayerBank()
-    return player.brank
+    return player.bank
 end
 
 function GetPlayerUniqueId()

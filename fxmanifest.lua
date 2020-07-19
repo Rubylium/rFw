@@ -43,6 +43,8 @@ server_exports {
     "RemoveItem",
     "AddItemIf",
     "ExhangeItem",
+    "GiveMoneyToSociety",
+    "GiveBankToSociety",
 }
 
 exports {
