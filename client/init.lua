@@ -6,8 +6,9 @@ Citizen.CreateThread(function()
 end)
 
 RegisterNetEvent(config.prefix.."PlayerLoaded")
-AddEventHandler(config.prefix.."PlayerLoaded", function(playersInfo)
+AddEventHandler(config.prefix.."PlayerLoaded", function(playersInfo, items)
     player = playersInfo
+    config.items = items
 
     SetEntityCoords(GetPlayerPed(-1), player.pos, 0.0, 0.0, 0.0, 0)
     InitPosLoop()

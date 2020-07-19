@@ -96,5 +96,5 @@ AddEventHandler(config.prefix.."InitPlayer", function()
         PlayersCache[source].perm = info[1].perm_level
     end
     print("^2CACHE: ^7Added player "..source.." to cache.")
-    TriggerClientEvent(config.prefix.."PlayerLoaded", source, PlayersCache[source])
+    TriggerClientEvent(config.prefix.."PlayerLoaded", source, PlayersCache[source], config.items)
 end)

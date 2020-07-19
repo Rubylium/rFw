@@ -49,7 +49,6 @@ exports {
     "IsPlayerLoaded",
     "GetPlayerUniqueId",
     "RegisterItemAction",
-    "RegisterNewItem",
     "UseItem",
     "GetPlayerPermLevel",
 }
