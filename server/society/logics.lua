@@ -21,7 +21,7 @@ local second = 1000
 local minute = 60*second
 Citizen.CreateThread(function()
     while true do
-        Wait(0.1*minute)
+        Wait(5*minute)
         societyCount = GetSocietyCount()
         for k,v in pairs(societyCache) do
             SaveSocietyCache(v)
