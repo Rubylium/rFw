@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jul 19, 2020 at 10:39 AM
+-- Generation Time: Jul 19, 2020 at 07:31 PM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 5.6.40
 
@@ -42,13 +42,6 @@ CREATE TABLE IF NOT EXISTS `players` (
   KEY `license` (`license`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `players`
---
-
-INSERT INTO `players` (`id`, `license`, `accounts`, `perm_level`, `job`, `job_grade`, `inv`, `pos`) VALUES
-(12, 'license:e1c5d1fad8a9f0305aee6ff0c4b73a1548e92374', '{\"money\":500,\"bank\":2000}', 0, 'Aucun', '0', '{\"repairkit\":{\"label\":\"Repair kit\",\"count\":1}}', '{\"x\":55.89034652709961,\"z\":69.4189682006836,\"y\":19.083532333374025}');
-
 -- --------------------------------------------------------
 
 --
@@ -66,6 +59,29 @@ CREATE TABLE IF NOT EXISTS `players_veh` (
   PRIMARY KEY (`plate`),
   KEY `owner` (`owner`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `society`
+--
+
+DROP TABLE IF EXISTS `society`;
+CREATE TABLE IF NOT EXISTS `society` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `society_name` varchar(50) NOT NULL,
+  `money` int(11) NOT NULL DEFAULT 0,
+  `inventory` text DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `society`
+--
+
+INSERT INTO `society` (`id`, `society_name`, `money`, `inventory`) VALUES
+(1, 'test_society', 1000, '{}'),
+(2, 'test_society2', 1500, '{}');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
