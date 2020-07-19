@@ -33,7 +33,7 @@ end)
 RegisterNetEvent(config.prefix.."OnAccountsRefresh")
 AddEventHandler(config.prefix.."OnAccountsRefresh", function(money, bank)
     player.money = money
-    player.brank = bank
+    player.bank = bank
 end)
 
 function IsPlayerLoaded()
