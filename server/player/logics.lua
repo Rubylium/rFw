@@ -1,8 +1,4 @@
-
-
-
 PlayersCache = {}
-
 
 Citizen.CreateThread(function()
     while true do
@@ -23,6 +19,7 @@ end)
 
 local savingCount = 0
 local requests = {}
+
 function SavePlayer(info, id)
     local account = json.encode({money = info.money, bank = info.bank})
     local inv = json.encode(info.inv)
