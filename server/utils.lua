@@ -19,7 +19,7 @@ end)
 local errorsCode = {
     [1] = "Trying to do action on an item that do not exist.",
     [2] = "Trying to do action on an item that do not exist in player inventory.",
-    [3] = "Trying to transfer invalid money (value > player's money)",
+    [3] = "Trying to transfer invalid money (value > player's money / bank)",
 }
 function ErrorHandling(source, code)    
     print("^1ERROR:^7 "..errorsCode[code].." | Error triggered by ["..source.."]")
