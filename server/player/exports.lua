@@ -72,6 +72,7 @@ function BankToCash(id,value)
     else
         PlayersCache[id].bank = PlayersCache[id].bank - value
         PlayersCache[id].money = PlayersCache[id].money + value
+        TriggerClientEvent(config.prefix.."OnAccountsRefresh", id, PlayersCache[id].money, PlayersCache[id].bank)
     end
 end
 
@@ -85,6 +86,7 @@ function CashToBank(id,value)
     else
         PlayersCache[id].bank = PlayersCache[id].bank + value
         PlayersCache[id].money = PlayersCache[id].money - value
+        TriggerClientEvent(config.prefix.."OnAccountsRefresh", id, PlayersCache[id].money, PlayersCache[id].bank)
     end
 end
 
