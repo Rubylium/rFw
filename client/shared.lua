@@ -24,7 +24,25 @@ function ShowFloatingHelpNotification(msg, coords)
 	EndTextCommandDisplayHelp(2, false, false, -1)
 end
 
-
+--[[
+	enum spinnerType  
+	{  
+		LOADING_PROMPT_LEFT, 	(1) 
+		LOADING_PROMPT_LEFT_2,  (2)
+		LOADING_PROMPT_LEFT_3,  (3)
+		SAVE_PROMPT_LEFT,  		(4)
+		LOADING_PROMPT_RIGHT,  	(5)
+	}; 
+--]]
+function ShowLoadingMessage(text, spinnerType, timeMs)
+	Citizen.CreateThread(function()
+		BeginTextCommandBusyspinnerOn("STRING")
+		AddTextComponentSubstringPlayerName(text)
+		EndTextCommandBusyspinnerOn(spinnerType)
+		Wait(timeMs)
+		RemoveLoadingPrompt()
+	end)
+end
 
 function GetVehicleProperties(vehicle)
 	if DoesEntityExist(vehicle) then
@@ -267,6 +285,30 @@ function GetVehiclesInArea (coords, area)
 	end
 
 	return vehiclesInArea
+end
+
+function GetClosestVehicle(coords)
+	local vehicles        = GetVehicles()
+	local closestDistance = -1
+	local closestVehicle  = -1
+	local coords          = coords
+
+	if coords == nil then
+		local playerPed = PlayerPedId()
+		coords          = GetEntityCoords(playerPed)
+	end
+
+	for i=1, #vehicles, 1 do
+		local vehicleCoords = GetEntityCoords(vehicles[i])
+		local distance      = GetDistanceBetweenCoords(vehicleCoords, coords.x, coords.y, coords.z, true)
+
+		if closestDistance == -1 or closestDistance > distance then
+			closestVehicle  = vehicles[i]
+			closestDistance = distance
+		end
+	end
+
+	return closestVehicle, closestDistance
 end
 
 function IsSpawnPointClear(coords, radius)
