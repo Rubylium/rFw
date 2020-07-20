@@ -39,8 +39,8 @@ server_exports {
     "HasEnoughCash",
     "BankToCash",
     "CashToBank",
-    "doCashTransfer",
-    "doBankTransfer"
+    "CashTransfer",
+    "BankTransfer",
     "AddItem",
     "RemoveItem",
     "AddItemIf",
