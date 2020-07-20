@@ -7,6 +7,14 @@ function GetLicense(id)
     end
 end
 
+RegisterNetEvent("DeleteEntity")
+AddEventHandler("DeleteEntity", function(list)
+    for k,v in pairs(list) do
+        local entity = NetworkGetEntityFromNetworkId(v)
+        Citizen.InvokeNative(`DELETE_ENTITY` & 0xFFFFFFFF, entity)
+    end
+end) 
+
 RegisterNetEvent(config.prefix.."RegisterNewItem")
 AddEventHandler(config.prefix.."RegisterNewItem", function(item, _label, _weight)
 	if config.items[item] == nil then
