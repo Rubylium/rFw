@@ -2,11 +2,13 @@ local PlayerLoaded = false
 local player = {}
 
 Citizen.CreateThread(function()
+    ShowLoadingMessage("Loading player data ...", 2, 5000)
     TriggerServerEvent(config.prefix.."InitPlayer")
 end)
 
 RegisterNetEvent(config.prefix.."PlayerLoaded")
 AddEventHandler(config.prefix.."PlayerLoaded", function(playersInfo, items)
+    ShowLoadingMessage("Spawning player", 2, 3500)
     player = playersInfo
     config.items = items
 
