@@ -53,15 +53,17 @@ setPlayerSkin(ped, table)
 
 ]]
 
+
+--[[
+   skin = Ped name ( **not hash**, Function will convert into hash )
+]]
 function setPlayerPed(skin)
-   local hash = skin
+   local hash = GetHashKey(skin)
    RequestModel(hash)
-   while not HasModelLoaded(hash) do
-       Citizen.Wait(500)
-   end
+   while not HasModelLoaded(hash) do Wait(1) end
    SetPlayerModel(PlayerId(), hash)
    SetPedDefaultComponentVariation(PlayerPedId())
-   SetModelAsNoLongerNeeded(PlayerPedId())
+   SetModelAsNoLongerNeeded(hash)
 end
 
 function setPlayerSkin(ped, table) 
