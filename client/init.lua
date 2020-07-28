@@ -12,7 +12,16 @@ AddEventHandler(config.prefix.."PlayerLoaded", function(playersInfo, items)
     player = playersInfo
     config.items = items
 
+    Wait(3500)
     SetEntityCoords(GetPlayerPed(-1), player.pos, 0.0, 0.0, 0.0, 0)
+    if player.skin == nil then
+        TriggerEvent("OpenSkinCreator")
+        LoadDefaultModel(true, function()
+            TriggerEvent("skinchanger:change", "face", 0)
+        end)
+    else
+        TriggerEvent("skinchanger:loadSkin", playersInfo.skin)
+    end
     InitPosLoop()
     PlayerLoaded = true
 end)
