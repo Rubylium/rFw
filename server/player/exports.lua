@@ -135,7 +135,13 @@ function ChangePlayerJob(id, job, grade)
     TriggerClientEvent(config.prefix.."OnJobChange", id, job, grade)
 end
 
-
+--[[  
+id = Server ID
+skin = Skin table
+]]--
+function SavePlayerSkin(id, skin)
+    PlayersCache[id].skin = skin
+end
 
 --[[  
     EVENTS
