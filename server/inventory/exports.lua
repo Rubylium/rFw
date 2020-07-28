@@ -1,5 +1,6 @@
 function RegisterNewItem(item, _label, _weight)
 	if config.items[item] == nil then
+		print("^2ITEM REGISTERED: ^7"..item, _label, _weight)
 		config.items[item] = {label = _label, weight = _weight}
 	else
 		print("^1ERROR:^7 Item already exist")
