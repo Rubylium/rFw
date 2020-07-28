@@ -47,6 +47,7 @@ server_exports {
     "ExhangeItem",
     "GiveMoneyToSociety",
     "GiveBankToSociety",
+    "SavePlayerSkin",
 }
 
 exports {
