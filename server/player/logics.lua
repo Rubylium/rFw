@@ -22,7 +22,8 @@ function SavePlayerDisconnect(info, id)
     local inv = json.encode(info.inv)
     local pos = json.encode({x = info.pos.x, y = info.pos.y, z = info.pos.z})
     local skin = json.encode(info.skin)
-    MySQL.Sync.execute("UPDATE `players` SET identity = '[]', accounts = '"..account.."', skin = '"..skin.."', inv = '"..inv.."', pos = '"..pos.."', job = '"..info.job.."', job_grade = '"..info.job_grade.."' WHERE players.id = '"..info.id.."'")
+    local identity = json.encode(info.identity)
+    MySQL.Sync.execute("UPDATE `players` SET identity = '"..identity.."', accounts = '"..account.."', skin = '"..skin.."', inv = '"..inv.."', pos = '"..pos.."', job = '"..info.job.."', job_grade = '"..info.job_grade.."' WHERE players.id = '"..info.id.."'")
     print("^2SAVED: ^7"..id.." saved.")
 end
 
@@ -55,7 +56,7 @@ end
 function CreateUser(license)
     local accounts = json.encode({money = config.defaultMoney, bank = config.defaultBank})
     local pos = json.encode({x = config.defaultPos.x, y = config.defaultPos.y, z = config.defaultPos.z})
-    MySQL.Sync.execute("INSERT INTO `players` (`license`, `accounts`, `perm_level`, `inv`, `pos`, `job`, `job_grade`) VALUES ('"..license.."', '"..accounts.."', '0', '[]', '"..pos.."', 'Aucun', '0')")
+    MySQL.Sync.execute("INSERT INTO `players` (`license`, `accounts`, `identity`, `perm_level`, `inv`, `pos`, `job`, `job_grade`) VALUES ('"..license.."', '"..accounts.."', '[]', '0', '[]', '"..pos.."', 'Aucun', '0')")
 
     local id = MySQL.Sync.fetchAll("SELECT id FROM players WHERE license = @identifier", {
         ['@identifier'] = license
