@@ -48,6 +48,7 @@ server_exports {
     "GiveMoneyToSociety",
     "GiveBankToSociety",
     "SavePlayerSkin",
+    "SavePlayerIdentity",
 }
 
 exports {
@@ -60,4 +61,5 @@ exports {
     "RegisterItemAction",
     "UseItem",
     "GetPlayerPermLevel",
+    "GetPlayerIdentity"
 }

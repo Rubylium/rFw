@@ -11,7 +11,6 @@ end)
 
 AddEventHandler('playerDropped', function (reason)
     local source = source
-    print("Player dropped event, source: "..source.." - "..reason)
     if PlayersCache[source] ~= nil then
         SavePlayerDisconnect(PlayersCache[source], source)
         PlayersCache[source] = nil
@@ -23,7 +22,7 @@ function SavePlayerDisconnect(info, id)
     local inv = json.encode(info.inv)
     local pos = json.encode({x = info.pos.x, y = info.pos.y, z = info.pos.z})
     local skin = json.encode(info.skin)
-    MySQL.Sync.execute("UPDATE `players` SET accounts = '"..account.."', skin = '"..skin.."', inv = '"..inv.."', pos = '"..pos.."', job = '"..info.job.."', job_grade = '"..info.job_grade.."' WHERE players.id = '"..info.id.."'")
+    MySQL.Sync.execute("UPDATE `players` SET identity = '[]', accounts = '"..account.."', skin = '"..skin.."', inv = '"..inv.."', pos = '"..pos.."', job = '"..info.job.."', job_grade = '"..info.job_grade.."' WHERE players.id = '"..info.id.."'")
     print("^2SAVED: ^7"..id.." saved.")
 end
 
@@ -35,7 +34,8 @@ function SavePlayer(info, id)
     local inv = json.encode(info.inv)
     local pos = json.encode({x = info.pos.x, y = info.pos.y, z = info.pos.z})
     local skin = json.encode(info.skin)
-    requests[#requests + 1] = "UPDATE `players` SET accounts = '"..account.."', skin = '"..skin.."', inv = '"..inv.."', pos = '"..pos.."', job = '"..info.job.."', job_grade = '"..info.job_grade.."' WHERE players.id = '"..info.id.."'"
+    local identity = json.encode(info.identity)
+    requests[#requests + 1] = "UPDATE `players` SET identity = '"..identity.."', accounts = '"..account.."', skin = '"..skin.."', inv = '"..inv.."', pos = '"..pos.."', job = '"..info.job.."', job_grade = '"..info.job_grade.."' WHERE players.id = '"..info.id.."'"
     savingCount = savingCount + 1
 
     if savingCount == #PlayersCache and savingCount > 0 then
@@ -86,6 +86,7 @@ AddEventHandler(config.prefix.."InitPlayer", function()
         PlayersCache[source].job_grade = 0
         PlayersCache[source].perm = 0
         PlayersCache[source].skin = nil
+        PlayersCache[source].identity = {}
     else
         local inv = json.decode(info[1].inv)
         local account = json.decode(info[1].accounts)
@@ -107,6 +108,11 @@ AddEventHandler(config.prefix.."InitPlayer", function()
             PlayersCache[source].skin = nil
         else
             PlayersCache[source].skin = json.decode(info[1].skin)
+        end
+        if info[1].identity == nil then
+            PlayersCache[source].identity = nil
+        else
+            PlayersCache[source].identity = json.decode(info[1].identity)
         end
     end
     print("^2CACHE: ^7Added player "..source.." to cache.")

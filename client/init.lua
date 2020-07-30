@@ -74,3 +74,7 @@ end
 function GetPlayerPermLevel()
     return player.perm
 end
+
+function GetPlayerIdentity()
+    return player.identity
+end

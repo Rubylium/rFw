@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jul 28, 2020 at 03:23 PM
+-- Generation Time: Jul 30, 2020 at 07:16 PM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 5.6.40
 
@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `players` (
   `license` varchar(50) NOT NULL,
   `skin` text DEFAULT NULL,
   `accounts` text NOT NULL,
+  `identity` text NOT NULL,
   `perm_level` int(11) NOT NULL,
   `job` varchar(255) NOT NULL,
   `job_grade` varchar(255) NOT NULL,
