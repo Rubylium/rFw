@@ -151,11 +151,10 @@ dateofbirth = Player date of birth
 sex = Player sex
 height = Player height
 ]]--
-function SavePlayerIdentity(id, firstname, lastname, dateofbirth, sex, height)
+function SavePlayerIdentity(id, firstname, lastname, dateofbirth, height)
     if firstname ~= nil then PlayersCache[id].identity.firstname = firstname end
     if lastname ~= nil then PlayersCache[id].identity.lastname = lastname end
     if dateofbirth ~= nil then PlayersCache[id].identity.dateofbirth = dateofbirth end
-    if sex ~= nil then PlayersCache[id].identity.sex = sex end
     if height ~= nil then PlayersCache[id].identity.height = height end
 end
 
