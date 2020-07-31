@@ -36,9 +36,7 @@ end)
 RegisterNetEvent(config.prefix.."OnInvRefresh")
 AddEventHandler(config.prefix.."OnInvRefresh", function(inv, weight)
     player.inv = inv
-    if weight ~= nil then
-        player.weight = weight
-    end
+    player.weight = weight
 end)
 
 RegisterNetEvent(config.prefix.."OnAccountsRefresh")
@@ -68,7 +66,7 @@ function GetPlayerUniqueId()
 end
 
 function GetPlayerInv()
-    return player.inv, player.weight
+    return {inv = player.inv, weight = player.weight}
 end
 
 function GetPlayerPermLevel()
