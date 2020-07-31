@@ -118,4 +118,5 @@ AddEventHandler(config.prefix.."InitPlayer", function()
     end
     print("^2CACHE: ^7Added player "..source.." to cache.")
     TriggerClientEvent(config.prefix.."PlayerLoaded", source, PlayersCache[source], config.items)
+    TriggerClientEvent(config.prefix.."OnInvRefresh", source, PlayersCache[source].inv, GetInvWeight(PlayersCache[source].inv))
 end)
