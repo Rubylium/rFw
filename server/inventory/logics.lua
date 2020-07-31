@@ -72,7 +72,7 @@ function AddItemIf(id, item, count)
                     PlayersCache[id].inv[item].count = PlayersCache[id].inv[item].count + count
                 end
                 TriggerClientEvent(config.prefix.."OnGetItem", id, items[item].label, count)
-                TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv, iWeight)
+                TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv, GetInvWeight(PlayersCache[id].inv))
             else
                 -- Need to do error notification to say, you can't hold the object
                 TriggerClientEvent(config.prefix.."OnWeightLimit", id, items[item].label)
@@ -144,6 +144,7 @@ return = weight (int) but could be float
 function GetInvWeight(inv)
     local weight = 0
     for k,v in pairs(inv) do
+        print(v.label, v.count)
         weight = items[k].weight * v.count
     end
     return weight
