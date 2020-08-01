@@ -33,7 +33,7 @@ item = Item name, not label
 count = Item count to remove
 ]]--
 function RemoveItem(id, item, count)
-    Citizen.CreateThread(function()
+   --Citizen.CreateThread(function()
         if items[item] ~= nil then
             if PlayersCache[id].inv[item] ~= nil then -- Item do not exist in inventory
                 if PlayersCache[id].inv[item].count - count <= 0 then -- If count < or = 0 after removing item count, then deleting it from player inv
@@ -43,13 +43,16 @@ function RemoveItem(id, item, count)
                 end
                 TriggerClientEvent(config.prefix.."OnRemoveItem", id, items[item].label, count)
                 TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv, GetInvWeight(PlayersCache[id].inv))
+                return true
             else
                 ErrorHandling(id, 2)
+                return false
             end
         else
             ErrorHandling(id, 1)
+            return false
         end
-    end)
+    --end)
 end
 
 --[[ 
@@ -60,7 +63,7 @@ count = Item count to add
 /!\ This **do** check player weight befor giving the item /!\
 ]]--
 function AddItemIf(id, item, count)
-    Citizen.CreateThread(function() -- Working in async, maybe that could fix inv issue i got without working in async, need testing i guess
+    --Citizen.CreateThread(function() -- Working in async, maybe that could fix inv issue i got without working in async, need testing i guess
         if items[item] ~= nil then
             local iWeight = GetInvWeight(PlayersCache[id].inv)
             if iWeight + (items[item].weight * count) <= config.defaultWeightLimit then
@@ -73,15 +76,17 @@ function AddItemIf(id, item, count)
                 end
                 TriggerClientEvent(config.prefix.."OnGetItem", id, items[item].label, count)
                 TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv, GetInvWeight(PlayersCache[id].inv))
+                return true
             else
                 -- Need to do error notification to say, you can't hold the object
                 TriggerClientEvent(config.prefix.."OnWeightLimit", id, items[item].label)
+                return false
             end
         else
             -- Item do not exist, should do some kind of error notification
             ErrorHandling(id, 1)
         end
-    end)
+    --end)
 end
 
 
