@@ -49,6 +49,7 @@ server_exports {
     "GiveBankToSociety",
     "SavePlayerSkin",
     "SavePlayerIdentity",
+    "DropItem",
 }
 
 exports {
