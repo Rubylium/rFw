@@ -23,6 +23,7 @@ AddEventHandler(config.prefix.."PlayerLoaded", function(playersInfo, items)
         TriggerEvent("skinchanger:loadSkin", playersInfo.skin)
     end
     InitPosLoop()
+    LoadPickups()
     PlayerLoaded = true
 end)
 
