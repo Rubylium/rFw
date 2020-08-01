@@ -357,6 +357,33 @@ function DisplayClosetPlayer()
 	end
 end
 
+function LoadModel(model)
+	RequestModel(GetHashKey(model))
+	while not HasModelLoaded(GetHashKey(model)) do Wait(1) end
+end
+
+function SpawnProp(model, coords)
+	LoadModel(model)
+	local entity = CreateObject(GetHashKey(model), coords, 0, 0, 0)
+	FreezeEntityPosition(entity, true)
+	PlaceObjectOnGroundProperly(entity)
+
+	return entity
+end
+
+
+function DrawText3d(coords, text)
+	local _, _x, _y = World3dToScreen2d(coords.x, coords.y, coords.z-0.7)
+	SetTextScale(0.2, 0.2)
+	SetTextFont(0)
+	SetTextProportional(true)
+	SetTextColour(161, 161, 161, 255)
+	SetTextEntry("STRING")
+	SetTextCentre(true)
+	AddTextComponentString(text)
+	DrawText(_x, _y)
+end
+
 function KeyboardAmount()
     local amount = nil
     AddTextEntry("CUSTOM_AMOUNT", "Enter amount")
