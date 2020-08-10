@@ -17,7 +17,6 @@ function LoadPickups()
     function GetItemProp(item)
         for k,v in pairs(config.items) do
             if k == item then
-                print(k, item, v.label, v.prop)
                 if v.prop ~= nil then
                     return v.prop
                 else
@@ -63,12 +62,13 @@ function LoadPickups()
                 if not v.prop then
                     -- Create prop here
                     if v.id == nil then break end
-                    nearObjs[k].entity = SpawnProp(GetItemProp(nearObjs[k].item), v.coords)
+                    local prop = GetItemProp(nearObjs[k].item)
+                    nearObjs[k].entity = SpawnProp(prop, v.coords)
                     nearObjs[k].prop = true
                 end
                 if #(v.coords - pCoords) < 2 then
                     isNear = true
-                    DrawText3d(v.coords, "Press [~b~E~s~] to interact with x~b~"..v.count.."~s~ ~g~"..v.item)
+                    DrawText3d(GetEntityCoords(nearObjs[k].entity), "Press [~b~E~s~] to interact with x~b~"..v.count.."~s~ ~g~"..v.item)
                     if IsControlJustReleased(0, 38) then
                         local amount = KeyboardAmount()
                         if amount <= v.count then
