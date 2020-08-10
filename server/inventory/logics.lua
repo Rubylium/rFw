@@ -215,7 +215,7 @@ return = weight (int) but could be float
 function GetInvWeight(inv)
     local weight = 0
     for k,v in pairs(inv) do
-        weight = items[k].weight * v.count
+        weight = items[v.item].weight * v.count
     end
     return weight
 end
