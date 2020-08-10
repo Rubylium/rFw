@@ -373,7 +373,7 @@ end
 
 
 function DrawText3d(coords, text)
-	local _, _x, _y = World3dToScreen2d(coords.x, coords.y, coords.z-0.7)
+	local _, _x, _y = World3dToScreen2d(coords.x, coords.y, coords.z)
 	SetTextScale(0.2, 0.2)
 	SetTextFont(0)
 	SetTextProportional(true)
