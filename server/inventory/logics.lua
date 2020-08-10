@@ -38,13 +38,13 @@ id = Server ID
 item = Item name, not label
 count = Item count to remove
 ]]--
-function RemoveItem(id, item, count)
+function RemoveItem(id, itemid, count)
     if items[item] ~= nil then
-        if PlayersCache[id].inv[item] ~= nil then -- Item do not exist in inventory
-            if PlayersCache[id].inv[item].count - count <= 0 then -- If count < or = 0 after removing item count, then deleting it from player inv
-                PlayersCache[id].inv[item] = nil
+        if PlayersCache[id].inv[itemid] ~= nil then -- Item do not exist in inventory
+            if PlayersCache[id].inv[itemid].count - count <= 0 then -- If count < or = 0 after removing item count, then deleting it from player inv
+                PlayersCache[id].inv[itemid] = nil
             else
-                PlayersCache[id].inv[item].count = PlayersCache[id].inv[item].count - count
+                PlayersCache[id].inv[itemid].count = PlayersCache[id].inv[itemid].count - count
             end
             TriggerClientEvent(config.prefix.."OnRemoveItem", id, items[item].label, count)
             TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv, GetInvWeight(PlayersCache[id].inv))
