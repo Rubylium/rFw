@@ -189,7 +189,6 @@ function DoesItemExistWithArg(id, item, arg)
     if arg == nil then arg = {} end
     for k,v in pairs(PlayersCache[id].inv) do
         if v.item == item then
-            print(json.encode(v.args), json.encode(arg), json.encode(v.args) == json.encode(arg))
             if json.encode(v.args) == json.encode(arg) then
                 return true, v.itemId
             end
