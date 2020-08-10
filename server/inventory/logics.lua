@@ -182,7 +182,11 @@ function ExhangeItem(id, target, item, count, countsee)
     end)
 end
 
-
+--[[ 
+id = player id
+itemId = itemID of the item targeted
+arg = item args
+]]--
 function SetItemArg(id, itemId, arg)
     for k,v in pairs(PlayersCache[id].inv) do
         if v.itemId == itemId then
@@ -193,10 +197,18 @@ function SetItemArg(id, itemId, arg)
     TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv, GetInvWeight(PlayersCache[id].inv))
 end
 
+--[[ 
+return generated item id
+]]--
 function GenerateItemId()
     return ""..tostring(math.random(100001,900009)).."-"..tostring(math.random(100001,900009)).."-"..tostring(math.random(100001,900009))
 end
 
+--[[ 
+id = player id
+item = item name to check
+arg = item args
+]]--
 function DoesItemExistWithArg(id, item, arg)
     for k,v in pairs(PlayersCache[id].inv) do
         if v.item == item then
