@@ -108,78 +108,54 @@ count = Item count to add
 
 /!\ This **do** check player weight befor giving the item /!\
 ]]--
-function ExhangeItem(id, target, item, count, countsee)
-    Citizen.CreateThread(function()
-        if items[item] ~= nil then
-            local tWeight = GetInvWeight(PlayersCache[target].inv)
-            if tWeight + (items[item].weight * count) <= config.defaultWeightLimit then
+function ExhangeItem(id, target, item, count, countsee, args, itemid)
+    if items[item] ~= nil then
+        
+        local tWeight = GetInvWeight(PlayersCache[target].inv)
+        if tWeight + (items[item].weight * count) <= config.defaultWeightLimit then
 
-                -- Removing item from source
-                if PlayersCache[id].inv[item] == nil then
-                    -- Display errro, item can not be nil
-                    return
-                else
-                    if PlayersCache[id].inv[item].count ~= countsee then
-                        -- Display error, client count and server count are not synced, maybe try to duplicate ?
-                        return
-                    end
-
-                    if PlayersCache[id].inv[item].count - count <= 0 then
-                        PlayersCache[id].inv[item] = nil
-                    else
-                        PlayersCache[id].inv[item].count = PlayersCache[id].inv[item].coun - count
-                    end
-                    TriggerClientEvent(config.prefix.."OnRemoveItem", id, items[item].label, count)
-                    TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv, GetInvWeight(PlayersCache[id].inv))
-                end
-
-                -- Adding item to target
-
-                if PlayersCache[target].inv[item] == nil then -- Create item
-                    PlayersCache[target].inv[item] = {}
-                    PlayersCache[target].inv[item].label = items[item].label
-                    PlayersCache[target].inv[item].count = count
-                    PlayersCache[target].inv[item].args = {}
-                    PlayersCache[id].inv[item].itemId = GenerateItemId()
-                    if PlayersCache[id].inv[item].args ~= nil then
-                        PlayersCache[target].inv[item].args = PlayersCache[id].inv[item].args
-                    end
-                else -- Add to count
-                    if PlayersCache[target].inv[item].args ~= nil then
-                        if json.encode(PlayersCache[id].inv[item].args) ~= json.encode(PlayersCache[target].inv[item].args) then
-                            PlayersCache[target].inv[item] = {}
-                            PlayersCache[target].inv[item].label = items[item].label
-                            PlayersCache[target].inv[item].count = count
-                            PlayersCache[target].inv[item].args = {}
-                            PlayersCache[id].inv[item].itemId = GenerateItemId()
-                            if args ~= nil then
-                                PlayersCache[target].inv[item].args = args
-                            end
-                        else
-                            PlayersCache[target].inv[item].count = PlayersCache[target].inv[item].count + count
-                        end
-                    else
-                        if json.encode(PlayersCache[id].inv[item].args) ~= json.encode(PlayersCache[target].inv[item].args) then
-                            PlayersCache[target].inv[item] = {}
-                            PlayersCache[target].inv[item].label = items[item].label
-                            PlayersCache[target].inv[item].count = count
-                            PlayersCache[target].inv[item].args = {}
-                            PlayersCache[id].inv[item].itemId = GenerateItemId()
-                            if args ~= nil then
-                                PlayersCache[target].inv[item].args = args
-                            end
-                        else
-                            PlayersCache[target].inv[item].count = PlayersCache[target].inv[item].count + count
-                        end
-                    end
-                end
-                TriggerClientEvent(config.prefix.."OnGetItem", target, items[item].label, count)
-                TriggerClientEvent(config.prefix.."OnInvRefresh", target, PlayersCache[id].inv, tWeight)
+            -- Removing item from source
+            if PlayersCache[id].inv[itemid] == nil then
+                -- Display errro, item can not be nil
+                return
             else
-                -- Target don't have space, will do notification later
+                if PlayersCache[id].inv[itemid].count ~= countsee then
+                    -- Display error, client count and server count are not synced, maybe trying to duplicate ?
+                    return
+                end
+
+                if PlayersCache[id].inv[itemid].count - count <= 0 then
+                    PlayersCache[id].inv[itemid] = nil
+                else
+                    PlayersCache[id].inv[itemid].count = PlayersCache[id].inv[itemid].coun - count
+                end
+                TriggerClientEvent(config.prefix.."OnRemoveItem", id, items[item].label, count)
+                TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv, GetInvWeight(PlayersCache[id].inv))
             end
+
+            -- Adding item to target
+
+            local exist, itemid = DoesItemExistWithArg(id, item, args)
+            if not exist then -- Create item
+                itemid = GenerateItemId()
+                PlayersCache[target].inv[itemid] = {}
+                PlayersCache[target].inv[itemid].item = item
+                PlayersCache[target].inv[itemid].label = items[item].label
+                PlayersCache[target].inv[itemid].count = count
+                PlayersCache[target].inv[itemid].itemId = itemid
+                PlayersCache[target].inv[itemid].args = {}
+                if args ~= nil then
+                    PlayersCache[target].inv[itemid].args = args
+                end
+            else -- Add to count
+                PlayersCache[target].inv[itemid].count = PlayersCache[target].inv[itemid].count + count
+            end
+            TriggerClientEvent(config.prefix.."OnGetItem", target, items[item].label, count)
+            TriggerClientEvent(config.prefix.."OnInvRefresh", target, PlayersCache[id].inv, tWeight)
+        else
+            -- Target don't have space, will do notification later
         end
-    end)
+    end
 end
 
 --[[ 
