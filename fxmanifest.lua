@@ -50,6 +50,8 @@ server_exports {
     "SavePlayerSkin",
     "SavePlayerIdentity",
     "DropItem",
+    "CreatePickupItem",
+    "SetItemArg",
 }
 
 exports {
