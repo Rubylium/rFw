@@ -3,11 +3,9 @@ local nearObjs = {}
 
 
 RegisterNetEvent(config.prefix.."SendAllPickups")
-AddEventHandler(config.prefix.."SendAllPickups", function(pick)
+AddEventHandler(config.prefix.."SendAllPickups", function(pick, id, del, newCount)
     for k,v in pairs(nearObjs) do
-        if v.prop then
-            DeleteEntity(v.entity)
-        end
+        DeleteEntity(v.entity)
     end
     nearObjs = {}
     pickups = pick
@@ -50,6 +48,7 @@ function LoadPickups()
                 end
                 if not v.prop then
                     -- Create prop here
+                    if v.id == nil then break end
                     nearObjs[k].entity = SpawnProp("prop_cs_cardbox_01", v.coords)
                     nearObjs[k].prop = true
                 end
@@ -60,6 +59,12 @@ function LoadPickups()
                         local amount = KeyboardAmount()
                         if amount <= v.count then
                             TriggerServerEvent(config.prefix.."TakePickup", v.id, v.item, amount, v.count)
+                            if amount == v.count then
+                                if v.id == nil then break end
+                                pickups[v.id].added = false
+                                DeleteEntity(v.entity)
+                                nearObjs[k] = nil
+                            end
                         end
                     end
                     break
@@ -67,6 +72,7 @@ function LoadPickups()
 
 
                 if #(v.coords - pCoords) > 15 then
+                    if v.id == nil then break end
                     pickups[v.id].added = false
                     DeleteEntity(v.entity)
                     nearObjs[k] = nil
