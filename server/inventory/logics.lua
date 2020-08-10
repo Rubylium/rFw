@@ -38,7 +38,7 @@ id = Server ID
 item = Item name, not label
 count = Item count to remove
 ]]--
-function RemoveItem(id, itemid, count)
+function RemoveItem(id, item, itemid, count)
     if items[item] ~= nil then
         if PlayersCache[id].inv[itemid] ~= nil then -- Item do not exist in inventory
             if PlayersCache[id].inv[itemid].count - count <= 0 then -- If count < or = 0 after removing item count, then deleting it from player inv

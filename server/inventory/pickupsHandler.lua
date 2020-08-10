@@ -1,7 +1,8 @@
 local pickups = {}
 
-function DropItem(id, item, count, coords)
-    if RemoveItem(id, item, count) then
+function DropItem(id, item, itemid, count, coords)
+    print(id, item, itemid, count, coords)
+    if RemoveItem(id, item, itemid, count) then
         pickups[#pickups+1] = {item = item, count = count, coords = coords, added = false}
         TriggerClientEvent(config.prefix.."SendAllPickups", -1, pickups)
     end
