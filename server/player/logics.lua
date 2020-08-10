@@ -23,8 +23,18 @@ function SavePlayerDisconnect(info, id)
     local pos = json.encode({x = info.pos.x, y = info.pos.y, z = info.pos.z})
     local skin = json.encode(info.skin)
     local identity = json.encode(info.identity)
-    MySQL.Sync.execute("UPDATE `players` SET identity = '"..identity.."', accounts = '"..account.."', skin = '"..skin.."', inv = '"..inv.."', pos = '"..pos.."', job = '"..info.job.."', job_grade = '"..info.job_grade.."' WHERE players.id = '"..info.id.."'")
+    MySQL.Sync.execute("UPDATE `players` SET identity = @identity, accounts = @account, skin = @skin, inv = @inv, pos = @pos, job = @info_job, job_grade = @info_job_grade WHERE players.id = @info_id", {
+        ["@identity"] = identity,
+        ["@account"] = account,
+        ["@skin"] = skin,
+        ["@inv"] = inv,
+        ["@pos"] = pos,
+        ["@info_job"] = info.job,
+        ["@info_job_grade"] = info.job_grade,
+        ["@info_id"] = info.id,
+    })
     print("^2SAVED: ^7"..id.." saved.")
+
 end
 
 local savingCount = 0
