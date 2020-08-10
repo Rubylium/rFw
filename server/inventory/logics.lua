@@ -67,61 +67,36 @@ count = Item count to add
 /!\ This **do** check player weight befor giving the item /!\
 ]]--
 function AddItemIf(id, item, count, args)
-    --Citizen.CreateThread(function() -- Working in async, maybe that could fix inv issue i got without working in async, need testing i guess
-        if items[item] ~= nil then
-            local iWeight = GetInvWeight(PlayersCache[id].inv)
-            if iWeight + (items[item].weight * count) <= config.defaultWeightLimit then
-                if PlayersCache[id].inv[item] == nil then -- Item do not exist in inventory, creating it
-                    PlayersCache[id].inv[item] = {}
-                    PlayersCache[id].inv[item].label = items[item].label
-                    PlayersCache[id].inv[item].count = count
-                    PlayersCache[id].inv[item].args = {}
-                    PlayersCache[id].inv[item].itemId = GenerateItemId()
-                    if args ~= nil then
-                        PlayersCache[id].inv[item].args = args
-                    end
-                else -- Item do exist, adding count
-                    if PlayersCache[id].inv[item].args ~= nil then
-                        if json.encode(PlayersCache[id].inv[item].args) ~= json.encode(args) then
-                            PlayersCache[id].inv[item] = {}
-                            PlayersCache[id].inv[item].label = items[item].label
-                            PlayersCache[id].inv[item].count = count
-                            PlayersCache[id].inv[item].args = {}
-                            PlayersCache[id].inv[item].itemId = GenerateItemId()
-                            if args ~= nil then
-                                PlayersCache[id].inv[item].args = args
-                            end
-                        else
-                            PlayersCache[id].inv[item].count = PlayersCache[id].inv[item].count + count
-                        end
-                    else
-                        if json.encode(PlayersCache[id].inv[item].args) ~= json.encode(args) then
-                            PlayersCache[id].inv[item] = {}
-                            PlayersCache[id].inv[item].label = items[item].label
-                            PlayersCache[id].inv[item].count = count
-                            PlayersCache[id].inv[item].args = {}
-                            PlayersCache[id].inv[item].itemId = GenerateItemId()
-                            if args ~= nil then
-                                PlayersCache[id].inv[item].args = args
-                            end
-                        else
-                            PlayersCache[id].inv[item].count = PlayersCache[id].inv[item].count + count
-                        end
-                    end
+    if items[item] ~= nil then
+        local exist, itemid = DoesItemExistWithArg(id, item, args)
+        local iWeight = GetInvWeight(PlayersCache[id].inv)
+        if iWeight + (items[item].weight * count) <= config.defaultWeightLimit then
+            if not exist then -- Item do not exist in inventory, creating it
+                itemid = GenerateItemId()
+                PlayersCache[id].inv[itemid] = {}
+                PlayersCache[id].inv[itemid].item = item
+                PlayersCache[id].inv[itemid].label = items[item].label
+                PlayersCache[id].inv[itemid].count = count
+                PlayersCache[id].inv[itemid].itemId = itemid
+                PlayersCache[id].inv[itemid].args = {}
+                if args ~= nil then
+                    PlayersCache[id].inv[itemid].args = args
                 end
-                TriggerClientEvent(config.prefix.."OnGetItem", id, items[item].label, count)
-                TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv, GetInvWeight(PlayersCache[id].inv))
-                return true
-            else
-                -- Need to do error notification to say, you can't hold the object
-                TriggerClientEvent(config.prefix.."OnWeightLimit", id, items[item].label)
-                return false
+            else -- Item do exist, adding count
+                PlayersCache[id].inv[itemid].count = PlayersCache[id].inv[itemid].count + count
             end
+            TriggerClientEvent(config.prefix.."OnGetItem", id, items[item].label, count)
+            TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv, GetInvWeight(PlayersCache[id].inv))
+            return true
         else
-            -- Item do not exist, should do some kind of error notification
-            ErrorHandling(id, 1)
+            -- Need to do error notification to say, you can't hold the object
+            TriggerClientEvent(config.prefix.."OnWeightLimit", id, items[item].label)
+            return false
         end
-    --end)
+    else
+        -- Item do not exist, should do some kind of error notification
+        ErrorHandling(id, 1)
+    end
 end
 
 
