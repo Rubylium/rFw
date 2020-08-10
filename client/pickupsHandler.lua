@@ -9,8 +9,22 @@ AddEventHandler(config.prefix.."SendAllPickups", function(pick, id, del, newCoun
     end
     nearObjs = {}
     pickups = pick
+    SyncPickups()
 end)
 
+function SyncPickups()
+    local pPed = GetPlayerPed(-1)
+    local pCoords = GetEntityCoords(pPed)
+    
+    for k,v in pairs(pickups) do
+        if #(v.coords - pCoords) < 15 then
+            if not v.added then
+                table.insert(nearObjs, {item = v.item, count = v.count, id = k, coords = v.coords, prop = false, entity = nil})
+                pickups[k].added = true
+            end
+        end
+    end
+end
 
 function LoadPickups()
     
@@ -30,18 +44,7 @@ function LoadPickups()
 
     Citizen.CreateThread(function()
         while true do
-            local pPed = GetPlayerPed(-1)
-            local pCoords = GetEntityCoords(pPed)
-            
-            for k,v in pairs(pickups) do
-                if #(v.coords - pCoords) < 15 then
-                    if not v.added then
-                        table.insert(nearObjs, {item = v.item, count = v.count, id = k, coords = v.coords, prop = false, entity = nil})
-                        pickups[k].added = true
-                    end
-                end
-            end
-
+            SyncPickups()
             Wait(500)
         end
     end)
