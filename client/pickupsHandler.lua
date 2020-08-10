@@ -14,6 +14,20 @@ end)
 
 function LoadPickups()
     
+    function GetItemProp(item)
+        for k,v in pairs(config.items) do
+            if k == item then
+                print(k, item, v.label, v.prop)
+                if v.prop ~= nil then
+                    return v.prop
+                else
+                    return "prop_cs_cardbox_01"
+                end
+            end
+        end
+        return "prop_cs_cardbox_01"
+    end
+
 
     Citizen.CreateThread(function()
         while true do
@@ -49,7 +63,7 @@ function LoadPickups()
                 if not v.prop then
                     -- Create prop here
                     if v.id == nil then break end
-                    nearObjs[k].entity = SpawnProp("prop_cs_cardbox_01", v.coords)
+                    nearObjs[k].entity = SpawnProp(GetItemProp(nearObjs[k].item), v.coords)
                     nearObjs[k].prop = true
                 end
                 if #(v.coords - pCoords) < 2 then
