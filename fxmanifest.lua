@@ -68,5 +68,7 @@ exports {
     "RegisterItemAction",
     "UseItem",
     "GetPlayerPermLevel",
-    "GetPlayerIdentity"
+    "GetPlayerIdentity",
+    "GetPlayerJobGrade",
+    "GetPlayerBossStatus",
 }

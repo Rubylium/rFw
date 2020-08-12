@@ -28,10 +28,11 @@ AddEventHandler(config.prefix.."PlayerLoaded", function(playersInfo, items)
 end)
 
 RegisterNetEvent(config.prefix.."OnJobChange")
-AddEventHandler(config.prefix.."OnJobChange", function(job, grade)
+AddEventHandler(config.prefix.."OnJobChange", function(job, grade, boss)
     player.job = job
     player.job_grade = grade
-    TriggerEvent("rFw:JobChange", job, grade)
+    player.isBoss = boss
+    TriggerEvent("rFw:JobChange", job, grade, boss)
 end)
 
 RegisterNetEvent(config.prefix.."OnInvRefresh")
@@ -52,7 +53,15 @@ function IsPlayerLoaded()
 end
 
 function GetPlayerJob()
-    return player.job, player.job_grade
+    return player.job
+end
+
+function GetPlayerJobGrade()
+    return player.job_grade
+end
+
+function GetPlayerBossStatus()
+    return player.isBoss
 end
 
 function GetPlayerMoney()
