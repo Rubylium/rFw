@@ -38,6 +38,7 @@ RegisterNetEvent(config.prefix.."OnInvRefresh")
 AddEventHandler(config.prefix.."OnInvRefresh", function(inv, weight)
     player.inv = inv
     player.weight = weight
+    TriggerEvent("rFw:InvRefresh", player.inv, player.weight )
 end)
 
 RegisterNetEvent(config.prefix.."OnAccountsRefresh")
