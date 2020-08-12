@@ -52,6 +52,9 @@ server_exports {
     "DropItem",
     "CreatePickupItem",
     "SetItemArg",
+    "GetSocietyInfo",
+    "TransferItemToSociety",
+    "TransferItemFromSocietyToPlayer",
 }
 
 exports {
