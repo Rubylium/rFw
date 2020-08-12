@@ -11,5 +11,14 @@ config = {
 
     items = {
         ["test"] = {label = "Item test", weight = 1},
+    },
+
+
+    society = {
+        ["police"] = {
+            {grade = 1, label = "Cadet"},
+            {grade = 2, label = "Officier"},
+            {grade = 3, label = "Commandant"},
+        }
     }
 }
