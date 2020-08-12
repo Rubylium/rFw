@@ -123,3 +123,18 @@ end
 function GetSocietyInfo(society)
     return societyCache[society]
 end
+
+
+function IsPlayerBoss(id)
+    local job = PlayersCache[id].job
+    local grade = PlayersCache[id].job_grade
+    if config.society[job] ~= nil then
+        if tonumber(#config.society[job]) == tonumber(grade) then
+            return true
+        else
+            return false
+        end
+    else
+        return false
+    end
+end
