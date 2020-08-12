@@ -3,6 +3,7 @@ function GiveMoneyToSociety(id, society, amount)
         if PlayersCache[id].money >= amount then
             PlayersCache[id].money = PlayersCache[id].money - amount
             societyCache[society].money = societyCache[society].money + amount
+            TriggerClientEvent("society:GetSocietyInfo", id, societyCache[society])
         else
             ErrorHandling(id, 3)
         end
@@ -16,6 +17,7 @@ function GiveBankToSociety(id, society, amount)
         if PlayersCache[id].bank >= amount then
             PlayersCache[id].bank = PlayersCache[id].bank - amount
             societyCache[society].money = societyCache[society].money + amount
+            TriggerClientEvent("society:GetSocietyInfo", id, societyCache[society])
         else
             ErrorHandling(id, 3)
         end
@@ -52,6 +54,7 @@ function TransferItemToSociety(id, society, item, count, args)
 
             TriggerClientEvent(config.prefix.."OnRemoveItem", id, items[item].label, count)
             TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv, GetInvWeight(PlayersCache[id].inv))
+            TriggerClientEvent("society:GetSocietyInfo", id, societyCache[society])
         else
             ErrorHandling(id, 4)
         end
@@ -88,6 +91,7 @@ function TransferItemFromSocietyToPlayer(id, society, itemid, item, count, count
 
                 TriggerClientEvent(config.prefix.."OnGetItem", id, items[item].label, count)
                 TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv, GetInvWeight(PlayersCache[id].inv))
+                TriggerClientEvent("society:GetSocietyInfo", id, societyCache[society])
             else
                 ErrorHandling(id, 5)
             end
@@ -110,4 +114,9 @@ function DoesItemExistInSociety(society, item, args)
         end
     end
     return false
+end
+
+
+function GetSocietyInfo(society)
+    return societyCache[society]
 end
