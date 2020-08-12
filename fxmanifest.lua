@@ -55,6 +55,7 @@ server_exports {
     "GetSocietyInfo",
     "TransferItemToSociety",
     "TransferItemFromSocietyToPlayer",
+    "IsPlayerBoss",
 }
 
 exports {
