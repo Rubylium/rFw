@@ -25,21 +25,29 @@ function GiveBankToSociety(id, society, amount)
 end
 
 
-function TransferItemToSociety(id, society, item, count)
+function TransferItemToSociety(id, society, item, count, args)
     if items[item] ~= nil then
         if societyCache[society] ~= nil then -- Be sure the society exist befor doing thing with it
-            if societyCache[society].inventory[item] == nil then -- Creating the item
-                societyCache[society].inventory[item] = {}
-                societyCache[society].inventory[item].count = count
-                societyCache[society].inventory[item].label = items[item].label
+            local exist, itemid = DoesItemExistInSociety(society, item, args)
+            if exist then -- Creating the item
+                itemid = GenerateItemId()
+                societyCache[society].inventory[itemid] = {}
+                societyCache[society].inventory[itemid].item = item
+                societyCache[society].inventory[itemid].label = items[item].label
+                societyCache[society].inventory[itemid].count = count
+                societyCache[society].inventory[itemid].itemId = itemid
+                societyCache[society].inventory[itemid].args = {}
+                if args ~= nil then
+                    societyCache[society].inventory[itemid].args = args
+                end
             else -- Adding count to the item
-                societyCache[society].inventory[item].count = societyCache[society].inventory[item].count + count 
+                societyCache[society].inventory[itemid].count = societyCache[society].inventory[item].count + count 
             end
 
-            if PlayersCache[id].inv[item].count - count <= 0 then
-                PlayersCache[id].inv[item] = nil
+            if PlayersCache[id].inv[itemid].count - count <= 0 then
+                PlayersCache[id].inv[itemid] = nil
             else
-                PlayersCache[id].inv[item].count = PlayersCache[id].inv[item].count - count
+                PlayersCache[id].inv[itemid].count = PlayersCache[id].inv[itemid].count - count
             end
 
             TriggerClientEvent(config.prefix.."OnRemoveItem", id, items[item].label, count)
@@ -81,4 +89,17 @@ function TransferItemFromSocietyToPlayer(id, society, item, count, countSee) -- 
     else
         ErrorHandling(id, 1)
     end
+end
+
+
+function DoesItemExistInSociety(society, item, args)
+    if arg == nil then arg = {} end
+    for k,v in pairs(societyCache[society].inventory) do
+        if v.item == item then
+            if json.encode(v.args) == json.encode(arg) then
+                return true, v.itemId
+            end
+        end
+    end
+    return false
 end
