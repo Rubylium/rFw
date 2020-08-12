@@ -1,3 +1,5 @@
+local items = config.items
+
 function GiveMoneyToSociety(id, society, amount)
     if societyCache[society] ~= nil then -- Be sure the society exist befor doing thing with it
         if PlayersCache[id].money >= amount then
@@ -27,11 +29,11 @@ function GiveBankToSociety(id, society, amount)
 end
 
 
-function TransferItemToSociety(id, society, item, count, args)
+function TransferItemToSociety(id, society, item, itemId, count, args)
     if items[item] ~= nil then
         if societyCache[society] ~= nil then -- Be sure the society exist befor doing thing with it
             local exist, itemid = DoesItemExistInSociety(society, item, args)
-            if exist then -- Creating the item
+            if not exist then -- Creating the item
                 itemid = GenerateItemId()
                 societyCache[society].inventory[itemid] = {}
                 societyCache[society].inventory[itemid].item = item
@@ -43,13 +45,13 @@ function TransferItemToSociety(id, society, item, count, args)
                     societyCache[society].inventory[itemid].args = args
                 end
             else -- Adding count to the item
-                societyCache[society].inventory[itemid].count = societyCache[society].inventory[item].count + count 
+                societyCache[society].inventory[itemid].count = societyCache[society].inventory[itemid].count + count 
             end
 
-            if PlayersCache[id].inv[itemid].count - count <= 0 then
-                PlayersCache[id].inv[itemid] = nil
+            if PlayersCache[id].inv[itemId].count - count <= 0 then
+                PlayersCache[id].inv[itemId] = nil
             else
-                PlayersCache[id].inv[itemid].count = PlayersCache[id].inv[itemid].count - count
+                PlayersCache[id].inv[itemId].count = PlayersCache[id].inv[itemId].count - count
             end
 
             TriggerClientEvent(config.prefix.."OnRemoveItem", id, items[item].label, count)
@@ -63,17 +65,18 @@ function TransferItemToSociety(id, society, item, count, args)
     end
 end
 
-function TransferItemFromSocietyToPlayer(id, society, itemid, item, count, countSee) -- Too long name, but eh
+function TransferItemFromSocietyToPlayer(id, society, itemId, item, count, countSee) -- Too long name, but eh
     if items[item] ~= nil then
         if societyCache[society] ~= nil then -- Be sure the society exist befor doing thing with it
-            if societyCache[society].inventory[itemid].count == countSee then
-                if societyCache[society].inventory[itemid].count - count <= 0 then -- Removing the item
-                    societyCache[society].inventory[itemid] = nil
+            if societyCache[society].inventory[itemId].count == countSee then
+                local itemArgs = societyCache[society].inventory[itemId].args
+                if societyCache[society].inventory[itemId].count - count <= 0 then -- Removing the item
+                    societyCache[society].inventory[itemId] = nil
                 else -- Removing count
-                    societyCache[society].inventory[itemid].count = societyCache[society].inventory[itemid].count - count
+                    societyCache[society].inventory[itemId].count = societyCache[society].inventory[itemId].count - count
                 end
 
-                local exist, itemid = DoesItemExistWithArg(id, item, societyCache[society].inventory[itemid].args)
+                local exist, itemid = DoesItemExistWithArg(id, item, itemArgs)
                 if not exist then -- Item do not exist in inventory, creating it
                     itemid = GenerateItemId()
                     PlayersCache[id].inv[itemid] = {}
