@@ -46,7 +46,7 @@ function SavePlayer(info, id)
     local pos = json.encode({x = info.pos.x, y = info.pos.y, z = info.pos.z})
     local skin = json.encode(info.skin)
     local identity = json.encode(info.identity)
-    requests[#requests + 1] = "UPDATE `players` SET identity = '"..identity.."', accounts = '"..account.."', skin = '"..skin.."', inv = '"..inv.."', pos = '"..pos.."', job = '"..info.job.."', job_grade = '"..info.job_grade.."' WHERE players.id = '"..info.id.."'"
+    requests[#requests + 1] = "UPDATE `players` SET identity = "..identity..", accounts = "..account..", skin = "..skin..", inv = "..inv..", pos = "..pos..", job = "..info.job..", job_grade = "..info.job_grade.." WHERE players.id = "..info.id..""
     savingCount = savingCount + 1
 
     if savingCount == #PlayersCache and savingCount > 0 then
@@ -95,6 +95,7 @@ AddEventHandler(config.prefix.."InitPlayer", function()
         PlayersCache[source].pos = config.defaultPos
         PlayersCache[source].job = "Aucun"
         PlayersCache[source].job_grade = 0
+        PlayersCache[source].isBoss = false
         PlayersCache[source].perm = 0
         PlayersCache[source].skin = nil
         PlayersCache[source].identity = {}
@@ -114,6 +115,7 @@ AddEventHandler(config.prefix.."InitPlayer", function()
         end
         PlayersCache[source].job = info[1].job
         PlayersCache[source].job_grade = info[1].job_grade
+        PlayersCache[source].isBoss = IsPlayerBoss(source)
         PlayersCache[source].perm = info[1].perm_level
         if info[1].skin == nil then
             PlayersCache[source].skin = nil
