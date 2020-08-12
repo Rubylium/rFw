@@ -60,22 +60,30 @@ function TransferItemToSociety(id, society, item, count, args)
     end
 end
 
-function TransferItemFromSocietyToPlayer(id, society, item, count, countSee) -- Too long name, but eh
+function TransferItemFromSocietyToPlayer(id, society, itemid, item, count, countSee) -- Too long name, but eh
     if items[item] ~= nil then
         if societyCache[society] ~= nil then -- Be sure the society exist befor doing thing with it
-            if societyCache[society].inventory[item].count == countSee then
-                if societyCache[society].inventory[item].count - count <= 0 then -- Removing the item
-                    societyCache[society].inventory[item] = nil
+            if societyCache[society].inventory[itemid].count == countSee then
+                if societyCache[society].inventory[itemid].count - count <= 0 then -- Removing the item
+                    societyCache[society].inventory[itemid] = nil
                 else -- Removing count
-                    societyCache[society].inventory[item].count = societyCache[society].inventory[item].count - count
+                    societyCache[society].inventory[itemid].count = societyCache[society].inventory[itemid].count - count
                 end
 
-                if PlayersCache[id].inv[item] == nil then -- Creating item
-                    PlayersCache[id].inv[item] = {}
-                    PlayersCache[id].inv[item].label = items[item].label
-                    PlayersCache[id].inv[item].count = count
-                else -- Adding count
-                    PlayersCache[id].inv[item].count = PlayersCache[id].inv[item].count + count
+                local exist, itemid = DoesItemExistWithArg(id, item, societyCache[society].inventory[itemid].args)
+                if not exist then -- Item do not exist in inventory, creating it
+                    itemid = GenerateItemId()
+                    PlayersCache[id].inv[itemid] = {}
+                    PlayersCache[id].inv[itemid].item = item
+                    PlayersCache[id].inv[itemid].label = items[item].label
+                    PlayersCache[id].inv[itemid].count = count
+                    PlayersCache[id].inv[itemid].itemId = itemid
+                    PlayersCache[id].inv[itemid].args = {}
+                    if args ~= nil then
+                        PlayersCache[id].inv[itemid].args = args
+                    end
+                else -- Item do exist, adding count
+                    PlayersCache[id].inv[itemid].count = PlayersCache[id].inv[itemid].count + count
                 end
 
                 TriggerClientEvent(config.prefix.."OnGetItem", id, items[item].label, count)
