@@ -52,6 +52,9 @@ function OpenInventoryMenu()
         Citizen.CreateThread(function()
             while open do
                 RageUI.IsVisible(RMenu:Get('inventory', 'main'), function()
+                    -- Need to do money here
+
+                    
                     RageUI.Item.Separator("↓ Weight ~b~"..pWeight.."~s~ ↓")
                     for k,v in pairs(pInv) do
                         RageUI.Item.Button(v.label.." x~b~"..v.count, nil, {  }, true, {
@@ -76,6 +79,9 @@ function OpenInventoryMenu()
                     RageUI.Item.Button("Give", nil, {  }, true, {
                         onSelected = function()
                             -- Will do soon #fleme
+                        end,
+                        onHovered = function()
+                            DisplayClosetPlayer()
                         end,
                     })
                     RageUI.Item.Button("Drop", nil, {  }, true, {
