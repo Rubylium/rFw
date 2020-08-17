@@ -30,6 +30,7 @@ local errorsCode = {
     [3] = "Trying to transfer invalid money (value > player's money / bank)",
     [4] = "Trying to do action on invalid society name",
     [5] = "Trying to do action on invalide item count, probably server desync OR player trying duplication",
+    [6] = "Trying to change player job while not being boss",
 }
 function ErrorHandling(source, code)    
     print("^1ERROR:^7 "..errorsCode[code].." | Error triggered by ["..source.."]")
