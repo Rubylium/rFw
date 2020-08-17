@@ -138,3 +138,33 @@ function IsPlayerBoss(id)
         return false
     end
 end
+
+
+function RecruitPlayer(id, target)
+    if IsPlayerBoss(tonumber(id)) then
+        PlayersCache[tonumber(target)].job = PlayersCache[tonumber(id)].job
+        TriggerClientEvent(config.prefix.."OnJobChange", id, PlayersCache[tonumber(id)].job, PlayersCache[tonumber(target)].job_grade, PlayersCache[tonumber(target)].isBoss)
+    else
+        ErrorHandling(id, 6)
+    end
+end
+
+
+function LeaveJob(id, target)
+    if IsPlayerBoss(tonumber(id)) then
+        PlayersCache[tonumber(target)].job = job
+        TriggerClientEvent(config.prefix.."OnJobChange", id, job, PlayersCache[tonumber(target)].job_grade, PlayersCache[tonumber(target)].isBoss)
+    else
+        ErrorHandling(id, 6)
+    end
+end
+
+
+function ChangePlayerJobGrade(id, target, grade)
+    if IsPlayerBoss(tonumber(id)) then
+        PlayersCache[tonumber(target)].job_grade = grade
+        TriggerClientEvent(config.prefix.."OnJobChange", id, PlayersCache[tonumber(target)].job, grade, PlayersCache[tonumber(target)].isBoss)
+    else
+        ErrorHandling(id, 6)
+    end
+end
