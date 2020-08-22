@@ -1,6 +1,8 @@
 local open = false
 local pInv = {}
 local pWeight = 0
+local pMoney = 0
+local pBank = 0
 local item = {
     item = "",
     label = "",
@@ -21,9 +23,13 @@ RMenu.Add('inventory', 'item_usage', RageUI.CreateSubMenu(RMenu:Get('inventory',
 RMenu:Get('inventory', 'item_usage').EnableMouse = false
 
 
-function LiveRefreshMenu(inv, weight)
-    pInv = inv
-    pWeight = weight
+function LiveRefreshMenu(inv, weight, money, bank)
+    if inv ~= nil then pInv = inv end
+    if weight ~= nil then pWeight = weight end
+    if money ~= nil then pMoney = money end
+    if bank ~= nil then pBank = bank end
+
+
     local found = false
     for k,v in pairs(pInv) do
         if v.itemId == item.id then
@@ -49,11 +55,16 @@ function OpenInventoryMenu()
         local inf = GetPlayerInv()
         pInv = inf.inv
         pWeight = inf.weight
+        pMoney = GetPlayerMoney()
+        pBank = GetPlayerBank()
         Citizen.CreateThread(function()
             while open do
                 RageUI.IsVisible(RMenu:Get('inventory', 'main'), function()
                     -- Need to do money here
-
+                    RageUI.Item.Button(pMoney.."~g~$", nil, {  }, true, {
+                    }, RMenu:Get('inventory', "money_usage"))
+                    RageUI.Item.Button(pBank.."~g~$", nil, {  }, true, {
+                    }, RMenu:Get('inventory', "bank_usage"))
                     
                     RageUI.Item.Separator("↓ Weight ~b~"..pWeight.."~s~ ↓")
                     for k,v in pairs(pInv) do
