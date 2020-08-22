@@ -88,3 +88,7 @@ end
 function GetPlayerIdentity()
     return player.identity
 end
+
+function GetPlayerSkin()
+    return player.skin
+end
