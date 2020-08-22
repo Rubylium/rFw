@@ -160,6 +160,20 @@ function SavePlayerIdentity(id, firstname, lastname, dateofbirth, height)
     if height ~= nil then PlayersCache[id].identity.height = height end
 end
 
+
+function BuyIfCan(id, price)
+    if PlayersCache[id].money >= price then
+        PlayersCache[id].money = PlayersCache[id].money - price
+        return true
+    else
+        return false
+    end
+end
+
+
+function GetPlayerIdentity(id)
+    return {PlayersCache[id].identity.firstname, PlayersCache[id].identity.lastname}
+end
 --[[  
     EVENTS
 ]]--
