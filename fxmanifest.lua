@@ -92,6 +92,8 @@ server_exports {
     "RecruitPlayer",
     "LeaveJob",
     "ChangePlayerJobGrade",
+    "BuyIfCan",
+    "GetPlayerIdentity",
 }
 
 exports {
@@ -107,6 +109,7 @@ exports {
     "GetPlayerIdentity",
     "GetPlayerJobGrade",
     "GetPlayerBossStatus",
+    "GetPlayerSkin",
 }
 
 
