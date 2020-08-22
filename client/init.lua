@@ -39,13 +39,14 @@ RegisterNetEvent(config.prefix.."OnInvRefresh")
 AddEventHandler(config.prefix.."OnInvRefresh", function(inv, weight)
     player.inv = inv
     player.weight = weight
-    TriggerEvent("rFw:InvRefresh", player.inv, player.weight )
+    TriggerEvent("rFw:InvRefresh", player.inv, player.weight)
 end)
 
 RegisterNetEvent(config.prefix.."OnAccountsRefresh")
 AddEventHandler(config.prefix.."OnAccountsRefresh", function(money, bank)
     player.money = money
     player.bank = bank
+    TriggerEvent("rFw:AccountsRefresh", player.money, player.bank)
 end)
 
 function IsPlayerLoaded()
