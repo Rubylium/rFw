@@ -15,3 +15,6 @@ Public framework for FiveM
 [![N|Discord](https://img.shields.io/github/last-commit/Rubylium/rFw)](https://discord.gg/BKVkQsS)
 [![N|Discord](https://img.shields.io/maintenance/yes/2020)](https://discord.gg/BKVkQsS)
 [![N|Discord](https://img.shields.io/github/languages/top/Rubylium/rFw)](https://discord.gg/BKVkQsS)
+
+# Discord
+https://discord.gg/BKVkQsS
