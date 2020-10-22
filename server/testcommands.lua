@@ -14,6 +14,14 @@ RegisterCommand("removebank", function(source, args, rawCommand)
     RemoveBank(source, args[1])
 end, false)
 
+RegisterCommand("addblack", function(source, args, rawCommand)
+    AddBlack(source, args[1])
+end, false)
+
+RegisterCommand("removeblack", function(source, args, rawCommand)
+    RemoveBlack(source, args[1])
+end, false)
+
 RegisterCommand("giveitem", function(source, args, rawCommand)
     AddItemIf(source, args[1], tonumber(args[2]))
 end, false)

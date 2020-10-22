@@ -18,7 +18,7 @@ AddEventHandler('playerDropped', function (reason)
 end)
 
 function SavePlayerDisconnect(info, id)
-    local account = json.encode({money = info.money, bank = info.bank})
+    local account = json.encode({money = info.money, bank = info.bank, black = info.black})
     local inv = json.encode(info.inv)
     local pos = json.encode({x = info.pos.x, y = info.pos.y, z = info.pos.z})
     local skin = json.encode(info.skin)
@@ -31,7 +31,7 @@ local savingCount = 0
 local requests = {}
 
 function SavePlayer(info, id)
-    local account = json.encode({money = info.money, bank = info.bank})
+    local account = json.encode({money = info.money, bank = info.bank, black = info.black})
     local inv = json.encode(info.inv)
     local pos = json.encode({x = info.pos.x, y = info.pos.y, z = info.pos.z})
     local skin = json.encode(info.skin)
@@ -54,7 +54,7 @@ function SavePlayer(info, id)
 end
 
 function CreateUser(license)
-    local accounts = json.encode({money = config.defaultMoney, bank = config.defaultBank})
+    local accounts = json.encode({money = config.defaultMoney, bank = config.defaultBank, black = config.defaultBlack})
     local pos = json.encode({x = config.defaultPos.x, y = config.defaultPos.y, z = config.defaultPos.z})
     MySQL.Sync.execute("INSERT INTO `players` (`license`, `accounts`, `identity`, `perm_level`, `inv`, `pos`, `job`, `job_grade`) VALUES ('"..license.."', '"..accounts.."', '[]', '0', '[]', '"..pos.."', 'Aucun', '0')")
 
@@ -82,6 +82,7 @@ AddEventHandler(config.prefix.."InitPlayer", function()
         PlayersCache[source].id = id
         PlayersCache[source].money = config.defaultMoney
         PlayersCache[source].bank = config.defaultBank
+        PlayersCache[source].black = config.defaultBlack
         PlayersCache[source].pos = config.defaultPos
         PlayersCache[source].job = "Aucun"
         PlayersCache[source].job_grade = 0
@@ -96,6 +97,7 @@ AddEventHandler(config.prefix.."InitPlayer", function()
         PlayersCache[source].id = info[1].id
         PlayersCache[source].money = account.money
         PlayersCache[source].bank = account.bank
+        PlayersCache[source].black = account.black
         if info[1].pos == nil then
             PlayersCache[source].pos = config.defaultPos
         else

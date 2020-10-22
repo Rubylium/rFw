@@ -34,6 +34,22 @@ end
 
 --[[  
 id = Server ID
+add = black Money to add ( Int or float )
+]]--
+function AddBlack(id, add)
+    PlayersCache[id].black = PlayersCache[id].black + tonumber(add)
+end
+
+--[[  
+id = Server ID
+rmv = bank Money to remove ( Int or float )
+]]--
+function RemoveBlack(id, rmv)
+    PlayersCache[id].black = PlayersCache[id].black - tonumber(rmv)
+end
+
+--[[  
+id = Server ID
 ]]--
 function GetMoney(id)
     return PlayersCache[id].money
@@ -44,6 +60,13 @@ id = Server ID
 ]]--
 function GetBank(id)
     return PlayersCache[id].bank
+end
+
+--[[  
+id = Server ID
+]]--
+function GetBlack(id)
+    return PlayersCache[id].black
 end
 
 --[[  
@@ -60,6 +83,14 @@ value = Value to compare with player's cash
 ]]--
 function HasEnoughCash(id,value)
     return PlayersCache[id].money >= value
+end
+
+--[[  
+id = Server ID
+value = Value to compare with player's black 
+]]--
+function HasEnoughBlack(id,value)
+    return PlayersCache[id].black >= value
 end
 
 --[[  
@@ -110,6 +141,22 @@ function CashTransfer(from,to,value)
 end
 
 --[[  
+from = Sender's Server ID
+to = Receiver's Server ID
+value = Value to send to the target
+]]--
+function BlackTransfer(from,to,value)
+    if value > PlayersCache[from].black then
+        ErrorHandling(id,3)
+    else
+        RemoveBlack(from,value)
+        AddBlack(to,value)
+        TriggerClientEvent(config.prefix.."OnAccountsRefresh", from, PlayersCache[from].money, PlayersCache[from].black)
+        TriggerClientEvent(config.prefix.."OnAccountsRefresh", to, PlayersCache[to].money, PlayersCache[to].black)
+    end
+end
+
+--[[  
 id = Server ID
 value = Value to send from cash to bank
 ]]--
@@ -120,6 +167,20 @@ function CashToBank(id,value)
         AddBank(id,value)
         RemoveMoney(id,value)
         TriggerClientEvent(config.prefix.."OnAccountsRefresh", id, PlayersCache[id].money, PlayersCache[id].bank)
+    end
+end
+
+--[[  
+id = Server ID
+value = Value to send from black to cash
+]]--
+function BlackToCash(id,value)
+    if value > PlayersCache[id].black then
+        ErrorHandling(id,3)
+    else
+        AddMoney(id,value)
+        RemoveBlack(id,value)
+        TriggerClientEvent(config.prefix.."OnAccountsRefresh", id, PlayersCache[id].black, PlayersCache[id].money)
     end
 end
 
