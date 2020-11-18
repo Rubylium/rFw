@@ -10,7 +10,18 @@ config = {
 
     savingAllPlayers = 5, -- in minutes, exemple 5 will mean every 5 minutes every players are saved
 
+    inventoryKey = "F2",
+
     items = {
         ["test"] = {label = "Item test", weight = 1},
+    },
+
+
+    society = {
+        ["police"] = {
+            {grade = 1, label = "Cadet"},
+            {grade = 2, label = "Officier"},
+            {grade = 3, label = "Commandant"},
+        }
     }
 }

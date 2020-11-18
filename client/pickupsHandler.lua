@@ -3,34 +3,48 @@ local nearObjs = {}
 
 
 RegisterNetEvent(config.prefix.."SendAllPickups")
-AddEventHandler(config.prefix.."SendAllPickups", function(pick)
+AddEventHandler(config.prefix.."SendAllPickups", function(pick, id, del, newCount)
     for k,v in pairs(nearObjs) do
-        if v.prop then
-            DeleteEntity(v.entity)
-        end
+        DeleteEntity(v.entity)
     end
     nearObjs = {}
     pickups = pick
+    SyncPickups()
 end)
 
+function SyncPickups()
+    local pPed = GetPlayerPed(-1)
+    local pCoords = GetEntityCoords(pPed)
+    
+    for k,v in pairs(pickups) do
+        if #(v.coords - pCoords) < 15 then
+            if not v.added then
+                table.insert(nearObjs, {item = v.item, count = v.count, id = k, coords = v.coords, prop = false, entity = nil})
+                pickups[k].added = true
+            end
+        end
+    end
+end
 
 function LoadPickups()
     
+    function GetItemProp(item)
+        for k,v in pairs(config.items) do
+            if k == item then
+                if v.prop ~= nil then
+                    return v.prop
+                else
+                    return "prop_cs_cardbox_01"
+                end
+            end
+        end
+        return "prop_cs_cardbox_01"
+    end
+
 
     Citizen.CreateThread(function()
         while true do
-            local pPed = GetPlayerPed(-1)
-            local pCoords = GetEntityCoords(pPed)
-            
-            for k,v in pairs(pickups) do
-                if #(v.coords - pCoords) < 15 then
-                    if not v.added then
-                        table.insert(nearObjs, {item = v.item, count = v.count, id = k, coords = v.coords, prop = false, entity = nil})
-                        pickups[k].added = true
-                    end
-                end
-            end
-
+            SyncPickups()
             Wait(500)
         end
     end)
@@ -50,16 +64,24 @@ function LoadPickups()
                 end
                 if not v.prop then
                     -- Create prop here
-                    nearObjs[k].entity = SpawnProp("prop_cs_cardbox_01", v.coords)
+                    if v.id == nil then break end
+                    local prop = GetItemProp(nearObjs[k].item)
+                    nearObjs[k].entity = SpawnProp(prop, v.coords)
                     nearObjs[k].prop = true
                 end
                 if #(v.coords - pCoords) < 2 then
                     isNear = true
-                    DrawText3d(v.coords, "Press [~b~E~s~] to interact with x~b~"..v.count.."~s~ ~g~"..v.item)
+                    DrawText3d(GetEntityCoords(nearObjs[k].entity), "Press [~b~E~s~] to interact with x~b~"..v.count.."~s~ ~g~"..v.item)
                     if IsControlJustReleased(0, 38) then
                         local amount = KeyboardAmount()
                         if amount <= v.count then
                             TriggerServerEvent(config.prefix.."TakePickup", v.id, v.item, amount, v.count)
+                            if amount == v.count then
+                                if v.id == nil then break end
+                                pickups[v.id].added = false
+                                DeleteEntity(v.entity)
+                                nearObjs[k] = nil
+                            end
                         end
                     end
                     break
@@ -67,6 +89,7 @@ function LoadPickups()
 
 
                 if #(v.coords - pCoords) > 15 then
+                    if v.id == nil then break end
                     pickups[v.id].added = false
                     DeleteEntity(v.entity)
                     nearObjs[k] = nil
