@@ -11,7 +11,7 @@ RegisterNetEvent("DeleteEntity")
 AddEventHandler("DeleteEntity", function(list)
     for k,v in pairs(list) do
         local entity = NetworkGetEntityFromNetworkId(v)
-        Citizen.InvokeNative(`DELETE_ENTITY` & 0xFFFFFFFF, entity)
+        DeleteEntity(entity)
     end
 end) 
 
