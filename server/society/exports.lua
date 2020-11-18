@@ -1,8 +1,11 @@
+local items = config.items
+
 function GiveMoneyToSociety(id, society, amount)
     if societyCache[society] ~= nil then -- Be sure the society exist befor doing thing with it
         if PlayersCache[id].money >= amount then
             PlayersCache[id].money = PlayersCache[id].money - amount
             societyCache[society].money = societyCache[society].money + amount
+            TriggerClientEvent("society:GetSocietyInfo", id, societyCache[society])
         else
             ErrorHandling(id, 3)
         end
@@ -16,6 +19,7 @@ function GiveBankToSociety(id, society, amount)
         if PlayersCache[id].bank >= amount then
             PlayersCache[id].bank = PlayersCache[id].bank - amount
             societyCache[society].money = societyCache[society].money + amount
+            TriggerClientEvent("society:GetSocietyInfo", id, societyCache[society])
         else
             ErrorHandling(id, 3)
         end
@@ -25,25 +29,34 @@ function GiveBankToSociety(id, society, amount)
 end
 
 
-function TransferItemToSociety(id, society, item, count)
+function TransferItemToSociety(id, society, item, itemId, count, args)
     if items[item] ~= nil then
         if societyCache[society] ~= nil then -- Be sure the society exist befor doing thing with it
-            if societyCache[society].inventory[item] == nil then -- Creating the item
-                societyCache[society].inventory[item] = {}
-                societyCache[society].inventory[item].count = count
-                societyCache[society].inventory[item].label = items[item].label
+            local exist, itemid = DoesItemExistInSociety(society, item, args)
+            if not exist then -- Creating the item
+                itemid = GenerateItemId()
+                societyCache[society].inventory[itemid] = {}
+                societyCache[society].inventory[itemid].item = item
+                societyCache[society].inventory[itemid].label = items[item].label
+                societyCache[society].inventory[itemid].count = count
+                societyCache[society].inventory[itemid].itemId = itemid
+                societyCache[society].inventory[itemid].args = {}
+                if args ~= nil then
+                    societyCache[society].inventory[itemid].args = args
+                end
             else -- Adding count to the item
-                societyCache[society].inventory[item].count = societyCache[society].inventory[item].count + count 
+                societyCache[society].inventory[itemid].count = societyCache[society].inventory[itemid].count + count 
             end
 
-            if PlayersCache[id].inv[item].count - count <= 0 then
-                PlayersCache[id].inv[item] = nil
+            if PlayersCache[id].inv[itemId].count - count <= 0 then
+                PlayersCache[id].inv[itemId] = nil
             else
-                PlayersCache[id].inv[item].count = PlayersCache[id].inv[item].count - count
+                PlayersCache[id].inv[itemId].count = PlayersCache[id].inv[itemId].count - count
             end
 
             TriggerClientEvent(config.prefix.."OnRemoveItem", id, items[item].label, count)
             TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv, GetInvWeight(PlayersCache[id].inv))
+            TriggerClientEvent("society:GetSocietyInfo", id, societyCache[society])
         else
             ErrorHandling(id, 4)
         end
@@ -52,26 +65,36 @@ function TransferItemToSociety(id, society, item, count)
     end
 end
 
-function TransferItemFromSocietyToPlayer(id, society, item, count, countSee) -- Too long name, but eh
+function TransferItemFromSocietyToPlayer(id, society, itemId, item, count, countSee) -- Too long name, but eh
     if items[item] ~= nil then
         if societyCache[society] ~= nil then -- Be sure the society exist befor doing thing with it
-            if societyCache[society].inventory[item].count == countSee then
-                if societyCache[society].inventory[item].count - count <= 0 then -- Removing the item
-                    societyCache[society].inventory[item] = nil
+            if societyCache[society].inventory[itemId].count == countSee then
+                local itemArgs = societyCache[society].inventory[itemId].args
+                if societyCache[society].inventory[itemId].count - count <= 0 then -- Removing the item
+                    societyCache[society].inventory[itemId] = nil
                 else -- Removing count
-                    societyCache[society].inventory[item].count = societyCache[society].inventory[item].count - count
+                    societyCache[society].inventory[itemId].count = societyCache[society].inventory[itemId].count - count
                 end
 
-                if PlayersCache[id].inv[item] == nil then -- Creating item
-                    PlayersCache[id].inv[item] = {}
-                    PlayersCache[id].inv[item].label = items[item].label
-                    PlayersCache[id].inv[item].count = count
-                else -- Adding count
-                    PlayersCache[id].inv[item].count = PlayersCache[id].inv[item].count + count
+                local exist, itemid = DoesItemExistWithArg(id, item, itemArgs)
+                if not exist then -- Item do not exist in inventory, creating it
+                    itemid = GenerateItemId()
+                    PlayersCache[id].inv[itemid] = {}
+                    PlayersCache[id].inv[itemid].item = item
+                    PlayersCache[id].inv[itemid].label = items[item].label
+                    PlayersCache[id].inv[itemid].count = count
+                    PlayersCache[id].inv[itemid].itemId = itemid
+                    PlayersCache[id].inv[itemid].args = {}
+                    if args ~= nil then
+                        PlayersCache[id].inv[itemid].args = args
+                    end
+                else -- Item do exist, adding count
+                    PlayersCache[id].inv[itemid].count = PlayersCache[id].inv[itemid].count + count
                 end
 
                 TriggerClientEvent(config.prefix.."OnGetItem", id, items[item].label, count)
                 TriggerClientEvent(config.prefix.."OnInvRefresh", id, PlayersCache[id].inv, GetInvWeight(PlayersCache[id].inv))
+                TriggerClientEvent("society:GetSocietyInfo", id, societyCache[society])
             else
                 ErrorHandling(id, 5)
             end
@@ -80,5 +103,68 @@ function TransferItemFromSocietyToPlayer(id, society, item, count, countSee) -- 
         end
     else
         ErrorHandling(id, 1)
+    end
+end
+
+
+function DoesItemExistInSociety(society, item, args)
+    if arg == nil then arg = {} end
+    for k,v in pairs(societyCache[society].inventory) do
+        if v.item == item then
+            if json.encode(v.args) == json.encode(arg) then
+                return true, v.itemId
+            end
+        end
+    end
+    return false
+end
+
+
+function GetSocietyInfo(society)
+    return societyCache[society]
+end
+
+
+function IsPlayerBoss(id)
+    local job = PlayersCache[id].job
+    local grade = PlayersCache[id].job_grade
+    if config.society[job] ~= nil then
+        if tonumber(#config.society[job]) == tonumber(grade) then
+            return true
+        else
+            return false
+        end
+    else
+        return false
+    end
+end
+
+
+function RecruitPlayer(id, target)
+    if IsPlayerBoss(tonumber(id)) then
+        PlayersCache[tonumber(target)].job = PlayersCache[tonumber(id)].job
+        TriggerClientEvent(config.prefix.."OnJobChange", id, PlayersCache[tonumber(id)].job, PlayersCache[tonumber(target)].job_grade, PlayersCache[tonumber(target)].isBoss)
+    else
+        ErrorHandling(id, 6)
+    end
+end
+
+
+function LeaveJob(id, target)
+    if IsPlayerBoss(tonumber(id)) then
+        PlayersCache[tonumber(target)].job = job
+        TriggerClientEvent(config.prefix.."OnJobChange", id, job, PlayersCache[tonumber(target)].job_grade, PlayersCache[tonumber(target)].isBoss)
+    else
+        ErrorHandling(id, 6)
+    end
+end
+
+
+function ChangePlayerJobGrade(id, target, grade)
+    if IsPlayerBoss(tonumber(id)) then
+        PlayersCache[tonumber(target)].job_grade = grade
+        TriggerClientEvent(config.prefix.."OnJobChange", id, PlayersCache[tonumber(target)].job, grade, PlayersCache[tonumber(target)].isBoss)
+    else
+        ErrorHandling(id, 6)
     end
 end
