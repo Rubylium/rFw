@@ -43,7 +43,7 @@ AddEventHandler(config.prefix.."OnInvRefresh", function(inv, weight)
 end)
 
 RegisterNetEvent(config.prefix.."OnAccountsRefresh")
-AddEventHandler(config.prefix.."OnAccountsRefresh", function(money, bank)
+AddEventHandler(config.prefix.."OnAccountsRefresh", function(money, bank, black)
     player.money = money
     player.bank = bank
     TriggerEvent("rFw:AccountsRefresh", player.money, player.bank)
@@ -71,6 +71,10 @@ end
 
 function GetPlayerBank()
     return player.bank
+end
+
+function GetPlayerBlack()
+    return player.black
 end
 
 function GetPlayerUniqueId()
