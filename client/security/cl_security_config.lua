@@ -4,7 +4,7 @@ local tokenAcces = {
 }
 
 AddEventHandler("token:RequestTokenAcces", function(ressource, cb)
-    if token == nil do Wait(100) end
+    while token == nil do Wait(100) end
     local granted = false
     if tokenAcces[ressource] ~= nil then
         if tokenAcces[ressource] > 0 then
